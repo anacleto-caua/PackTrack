@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<GridPane alignment="center" hgap="15.0" vgap="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <children>
+        <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+            <children>
+                <Label text="Bem-vindo(a) ao PackTrack" textFill="#2d6a4f">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Faça login para continuar" textFill="#52b788">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+            </children>
+        </VBox>
+        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="campoUsuario" promptText="Digite seu usuário" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Senha:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <PasswordField fx:id="campoSenha" promptText="Digite sua senha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button mnemonicParsing="false" onAction="#handleLoginButtonAction" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Label fx:id="mensagemAcao" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+    </children>
+</GridPane>
