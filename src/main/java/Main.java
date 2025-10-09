@@ -9,7 +9,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // FXMLLoader loads the FXML file (the View) and instantiates the Controller
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/cadastro_clientes.fxml"));
 
         // Load the Scene using the loaded FXML content
         Scene scene = new Scene(fxmlLoader.load());

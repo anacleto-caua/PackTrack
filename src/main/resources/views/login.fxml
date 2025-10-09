@@ -36,7 +36,7 @@
         <TextField fx:id="campoUsuario" promptText="Digite seu usuário" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label text="Senha:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <PasswordField fx:id="campoSenha" promptText="Digite sua senha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button mnemonicParsing="false" onAction="#handleLoginButtonAction" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+        <Button mnemonicParsing="false" onAction="#handleMock" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
