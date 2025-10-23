@@ -44,4 +44,28 @@ public class ProductController {
 
         productService.save(productDTO);
     }
+
+    public TextField getProductName() {
+        return productName;
+    }
+
+    public TextField getProductDescription() {
+        return productDescription;
+    }
+
+    public TextField getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductName(TextField productName) {
+        this.productName = productName;
+    }
+
+    public void setProductDescription(TextField productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void setProductPrice(TextField productPrice) {
+        this.productPrice = productPrice;
+    }
 }

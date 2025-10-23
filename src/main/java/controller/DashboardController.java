@@ -18,6 +18,8 @@ public class DashboardController {
     @FXML
     public void handleClients() {
         System.out.println("Navegar para: Gestão de Clientes");
+
+        ViewManager.swapVBox(contentBody, "ClientRegister.fxml");
     }
 
     @FXML
