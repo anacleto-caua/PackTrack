@@ -30,6 +30,8 @@ public class DashboardController {
     @FXML
     public void handleEmployees() {
         System.out.println("Navegar para: Gestão de Funcionarios");
+
+        ViewManager.swapVBox(contentBody, "EmployeeRegister.fxml");
     }
 
     @FXML
