@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="controller.DashboardController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="850.0" prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #f7f9fb;">
+
+    <!-- Painel de Navegação (Lado Direito) -->
+    <right>
+        <VBox alignment="TOP_CENTER" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: #2d6a4f;" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="30.0" />
+            </padding>
+            <children>
+                <Label text="PackTrack" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Button
+                        onAction="#handleDashboard"
+                        text="Dashboard"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+                <Button
+                        onAction="#handleClients"
+                        text="Clients"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+                <Button
+                        onAction="#handleEmployees"
+                        text="Employees"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+                <Button
+                        onAction="#handleProducts"
+                        text="Products"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+                <Button
+                        onAction="#handleSupliers"
+                        text="Suppliers"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+
+            </children>
+        </VBox>
+    </right>
+
+    <!-- Área de Conteúdo Principal (Centro / Body) -->
+    <center>
+        <VBox fx:id="contentArea" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Bem-vindo à sua Dashboard!" textFill="#2d6a4f">
+                    <font>
+                        <Font name="System Bold" size="30.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="50.0" />
+                    </VBox.margin>
+                </Label>
+                <Label text="Clique em um dos botões ao lado para navegar." textFill="#888888">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+            </children>
+            <padding>
+                <Insets left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,10 +1,8 @@
 package manager;
 
-import app.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import service.Service;
 
 import java.io.IOException;
 
