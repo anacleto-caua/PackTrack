@@ -33,8 +33,7 @@ public class App extends Application {
 
         Scene scene = new Scene(fXMLloader.load());
 
-        ViewManager manager = new ViewManager();
-        manager.setMainScene(scene);
+        ViewManager.setMainScene(scene);
 
         // ✅ FIX 2: You must show the stage!
         stage.setTitle("PackTrack");

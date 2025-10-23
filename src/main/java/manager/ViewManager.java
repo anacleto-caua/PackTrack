@@ -1,34 +1,46 @@
 package manager;
 
+import app.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import service.Service;
 
 import java.io.IOException;
 
 public class ViewManager {
 
-    private Scene mainScene;
+    private static final ViewManager instance = new ViewManager();
 
-    public Scene getMainScene() {
-        return mainScene;
+    private static Scene mainScene;
+
+    private ViewManager() { // So no one tries to create a new instance
     }
 
-    public void setMainScene(Scene mainScene) {
-        this.mainScene = mainScene;
+    public static ViewManager getInstance() {
+        return instance;
     }
 
-    // This is the magic method for switching pages
-    public void loadView(String fxmlFile) {
+    public static void loadView(String fxmlFile) {
         try {
-            // Construct the full path to the FXML file
             String fxmlPath = "/views/" + fxmlFile;
             FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(fxmlPath));
             Parent root = loader.load();
-            mainScene.setRoot(root); // Swap the content of the scene
+            // Swap the content of the scene
+            instance.mainScene.setRoot(root);
+
         } catch (IOException e) {
             System.err.println("Error loading FXML file: " + fxmlFile);
             e.printStackTrace();
+
         }
+    }
+
+    public static Scene getMainScene() {
+        return instance.mainScene;
+    }
+
+    public static void setMainScene(Scene mainScene) {
+        instance.mainScene = mainScene;
     }
 }
