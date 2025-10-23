@@ -86,7 +86,7 @@
 
     <!-- Área de Conteúdo Principal (Centro / Body) -->
     <center>
-        <VBox fx:id="contentArea" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+        <VBox fx:id="contentBody" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Bem-vindo à sua Dashboard!" textFill="#2d6a4f">
                     <font>

@@ -3,6 +3,7 @@ package manager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -30,7 +31,28 @@ public class ViewManager {
         } catch (IOException e) {
             System.err.println("Error loading FXML file: " + fxmlFile);
             e.printStackTrace();
+        }
+    }
 
+    public static Parent loadFXML(String fxmlFile) {
+        try {
+            String fxmlPath = "/views/" + fxmlFile;
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(fxmlPath));
+            return loader.load();
+
+        } catch (IOException e) {
+            System.err.println("Failed to load FXML file: " + fxmlFile);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void swapVBox(VBox contentArea, String fxmlFile) {
+        Parent loadedView = ViewManager.loadFXML(fxmlFile);
+
+        if (loadedView != null) {
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(loadedView);
         }
     }
 

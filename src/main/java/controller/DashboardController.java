@@ -1,13 +1,14 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
+import manager.ViewManager;
 
 public class DashboardController {
 
     @FXML
-    private VBox contentArea;
+    private VBox contentBody;
 
     @FXML
     public void handleDashboard() {
@@ -22,6 +23,8 @@ public class DashboardController {
     @FXML
     public void handleSupliers() {
         System.out.println("Navegar para: Gestão de Fornecedores");
+
+        ViewManager.swapVBox(contentBody, "SupplierRegister.fxml");
     }
 
     @FXML
