@@ -11,13 +11,13 @@ public class LoginController {
 
     @FXML
     private PasswordField password;
-    
+
     @FXML
     protected void handleLoginButtonAction() {
         if (username.getText().equals("adm") || password.getText().equals("123")) {
             System.out.println("Successful login!");
         } else {
-            System.out.println("Login failed");
+            System.out.println("Login failed!");
         }
     }
 }
