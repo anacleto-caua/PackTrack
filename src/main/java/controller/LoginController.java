@@ -11,14 +11,13 @@ public class LoginController {
 
     @FXML
     private PasswordField password;
-
-    @FXML
-    protected void handleMock() {
-        System.out.println("mock!!!!!");
-    }
-
+    
     @FXML
     protected void handleLoginButtonAction() {
-        System.out.println("mock login button!");
+        if (username.getText().equals("adm") || password.getText().equals("123")) {
+            System.out.println("Successful login!");
+        } else {
+            System.out.println("Login failed");
+        }
     }
 }
