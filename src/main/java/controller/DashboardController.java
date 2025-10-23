@@ -37,6 +37,8 @@ public class DashboardController {
     @FXML
     public void handleProducts() {
         System.out.println("Navegar para: Gestão de Produtos");
+
+        ViewManager.swapVBox(contentBody, "ProductRegister.fxml");
     }
 
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="15.0" vgap="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<GridPane alignment="center" hgap="15.0" vgap="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProductController">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
@@ -33,18 +33,22 @@
         </VBox>
 
         <Label text="Nome do Produto:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="campoNomeProduto" promptText="Ex: Caixa de Papelão 30x30" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="productName" promptText="Ex: Caixa de Papelão 30x30" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
         <Label text="Descrição:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="campoDescricao" promptText="Detalhes adicionais do produto" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="productDescription" promptText="Detalhes adicionais do produto" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <Label text="Preço:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <TextField fx:id="campoPreco" promptText="Ex: 25.50" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="productPrice" promptText="Ex: 25.50" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <children>
-                <Button onAction="#handleMock" text="Cancelar" prefWidth="100.0" style="-fx-background-color: #fca311; -fx-text-fill: white; -fx-cursor: hand;"/>
-                <Button onAction="#handleMock" text="Salvar" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;"/>
+                <Button onAction="#onCancel"
+                        text="Cancelar"
+                        prefWidth="100.0" style="-fx-background-color: #fca311; -fx-text-fill: white; -fx-cursor: hand;"/>
+                <Button onAction="#onSubmit"
+                        text="Salvar"
+                        prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;"/>
             </children>
         </HBox>
     </children>
