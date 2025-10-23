@@ -10,10 +10,15 @@
 <?import javafx.scene.text.Font?>
 
 
-<GridPane alignment="center" hgap="15.0" vgap="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<GridPane alignment="center" hgap="15.0" vgap="15.0"
+          xmlns="http://javafx.com/javafx/21"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="controller.LoginController">
+
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
+
     <children>
         <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
             <children>
@@ -32,11 +37,19 @@
                 </Label>
             </children>
         </VBox>
+
         <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="campoUsuario" promptText="Digite seu usuário" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="username" promptText="Digite seu usuário" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
         <Label text="Senha:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <PasswordField fx:id="campoSenha" promptText="Digite sua senha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button mnemonicParsing="false" onAction="#handleMock" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white; -fx-cursor: hand;" text="Entrar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+        <PasswordField fx:id="password" promptText="Digite sua senha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Button
+                onAction="#handleLoginButtonAction"
+                text="Entrar"
+                mnemonicParsing="false"
+                prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #40916c; -fx-text-fill: white;
+                -fx-cursor: hand;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
