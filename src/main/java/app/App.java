@@ -1,10 +1,12 @@
 package app;
 
+import controller.SupplierRegisterController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import manager.ViewManager;
+import service.SupplierService;
 
 import java.io.IOException;
 
@@ -12,8 +14,23 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        SupplierService supplierService = new SupplierService();
         // ✅ FIX 1: Add the leading "/" to make the path absolute
-        FXMLLoader fXMLloader = new FXMLLoader(App.class.getResource("/views/login.fxml"));
+        FXMLLoader fXMLloader = new FXMLLoader(App.class.getResource("/views/SupplierRegister.fxml"));
+
+        fXMLloader.setControllerFactory(controllerClass -> {
+            if(controllerClass.equals(SupplierRegisterController.class)) {
+                return new SupplierRegisterController(supplierService);
+            } else {
+                try {
+                    return controllerClass.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         Scene scene = new Scene(fXMLloader.load());
 
         ViewManager manager = new ViewManager();
