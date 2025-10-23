@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.ClientService;
 
-public class ClientController {
+public class ClientRegisterController {
     @FXML
     private TextField clientName;
     @FXML

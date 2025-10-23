@@ -1,19 +1,14 @@
 package controller;
 
 import interfaces.ProductDTO;
-import interfaces.SupplierDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import service.ProductService;
 
-import java.math.BigDecimal;
-
-public class ProductController {
+public class ProductRegisterController {
 
     @FXML
     private TextField productName;
