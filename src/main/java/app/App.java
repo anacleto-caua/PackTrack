@@ -15,21 +15,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        SupplierService supplierService = new SupplierService();
         // ✅ FIX 1: Add the leading "/" to make the path absolute
-        FXMLLoader fXMLloader = new FXMLLoader(App.class.getResource("/views/SupplierRegister.fxml"));
-
-        fXMLloader.setControllerFactory(controllerClass -> {
-            if(controllerClass.equals(SupplierRegisterController.class)) {
-                return new SupplierRegisterController(supplierService);
-            } else {
-                try {
-                    return controllerClass.getDeclaredConstructor().newInstance();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        FXMLLoader fXMLloader = new FXMLLoader(App.class.getResource("/views/login.fxml"));
 
         Scene scene = new Scene(fXMLloader.load());
 
@@ -38,7 +25,7 @@ public class App extends Application {
         // ✅ FIX 2: You must show the stage!
         stage.setTitle("PackTrack");
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.show(); // This line actually opens the window
     }
 
