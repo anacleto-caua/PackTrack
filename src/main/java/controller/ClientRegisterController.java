@@ -37,6 +37,10 @@ public class ClientRegisterController {
         );
 
         clientService.save(clientDTO);
+
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     public TextField getClientName() {

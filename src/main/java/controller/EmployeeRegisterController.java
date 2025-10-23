@@ -30,7 +30,7 @@ public class EmployeeRegisterController {
     }
 
     @FXML
-    public void onSubmit() {
+    public void onSubmit(ActionEvent event) {
         EmployeeService employeeService = new EmployeeService();
 
         EmployeeDTO employee = new EmployeeDTO(
@@ -43,6 +43,10 @@ public class EmployeeRegisterController {
         );
 
         employeeService.save(employee);
+
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     public TextField getEmployeeName() {

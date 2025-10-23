@@ -38,9 +38,12 @@ public class ClientListController {
 
     private void handleDeleteClient(ClientDTO client) {
         System.out.println("Apagar cliente: " + client.name());
+        ViewManager.showModal("ClientRegister.fxml", "Apagar " + client.name());
     }
 
     private void handleUpdateClient(ClientDTO client) {
         System.out.println("Atualizar cliente: " + client.name());
+        ViewManager.showModal("ClientRegister.fxml", "Atualizar " + client.name());
+
     }
 }

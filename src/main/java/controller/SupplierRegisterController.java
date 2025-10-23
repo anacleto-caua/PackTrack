@@ -26,7 +26,7 @@ public class SupplierRegisterController {
     }
 
     @FXML
-    public void onSubmit(){
+    public void onSubmit(ActionEvent event){
         SupplierService supplierService = new SupplierService();
         
         SupplierDTO supplierDTO = new SupplierDTO(
@@ -36,6 +36,10 @@ public class SupplierRegisterController {
         );
 
         supplierService.save(supplierDTO);
+
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

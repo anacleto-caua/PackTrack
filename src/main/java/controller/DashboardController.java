@@ -26,14 +26,14 @@ public class DashboardController {
     public void handleSupliers() {
         System.out.println("Navegar para: Gestão de Fornecedores");
 
-        ViewManager.swapVBox(contentBody, "SupplierRegister.fxml");
+        ViewManager.swapVBox(contentBody, "ListSupplier.fxml");
     }
 
     @FXML
     public void handleEmployees() {
         System.out.println("Navegar para: Gestão de Funcionarios");
 
-        ViewManager.swapVBox(contentBody, "EmployeeRegister.fxml");
+        ViewManager.swapVBox(contentBody, "ListEmployee.fxml");
     }
 
     @FXML
