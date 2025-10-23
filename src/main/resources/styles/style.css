@@ -1,0 +1,19 @@
+.action-button {
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-padding: 3 6 3 6;
+    -fx-font-size: 10px;
+    -fx-background-radius: 4;
+}
+
+.edit-button {
+    -fx-background-color: #fca311;
+}
+
+.delete-button {
+    -fx-background-color: #e5383b;
+}
+
+.update-button {
+    -fx-background-color: #40916c;
+}

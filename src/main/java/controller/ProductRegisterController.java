@@ -28,7 +28,7 @@ public class ProductRegisterController {
     }
 
     @FXML
-    public void onSubmit(){
+    public void onSubmit(ActionEvent event){
         ProductService productService = new ProductService();
 
         ProductDTO productDTO = new ProductDTO(
@@ -38,6 +38,10 @@ public class ProductRegisterController {
         );
 
         productService.save(productDTO);
+
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     public TextField getProductName() {

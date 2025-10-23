@@ -19,7 +19,7 @@ public class DashboardController {
     public void handleClients() {
         System.out.println("Navegar para: Gestão de Clientes");
 
-        ViewManager.swapVBox(contentBody, "ClientRegister.fxml");
+        ViewManager.swapVBox(contentBody, "ListClient.fxml");
     }
 
     @FXML
@@ -40,7 +40,7 @@ public class DashboardController {
     public void handleProducts() {
         System.out.println("Navegar para: Gestão de Produtos");
 
-        ViewManager.swapVBox(contentBody, "ProductRegister.fxml");
+        ViewManager.swapVBox(contentBody, "ListProduct.fxml");
     }
 
 }

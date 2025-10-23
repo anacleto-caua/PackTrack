@@ -4,8 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ViewManager {
 
@@ -47,12 +50,46 @@ public class ViewManager {
         }
     }
 
+    public static void loadStyle(String cssFile) {
+        try {
+            String cssPath = "/styles/" + cssFile;
+            ViewManager.mainScene.getStylesheets().add(ViewManager.class.getResource(cssPath).toExternalForm());
+
+        } catch (Exception e) {
+            System.err.println("Failed to load CSS file: " + cssFile);
+            e.printStackTrace();
+        }
+    }
+
     public static void swapVBox(VBox contentArea, String fxmlFile) {
         Parent loadedView = ViewManager.loadFXML(fxmlFile);
 
         if (loadedView != null) {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(loadedView);
+        }
+    }
+
+    public static void showModal(String fxmlFile, String title) {
+        try {
+            String fxmlPath = "/views/" + fxmlFile;
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Stage modalStage = new Stage();
+            modalStage.setTitle(title);
+            modalStage.setScene(new Scene(root));
+
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+
+            if (mainScene != null) {
+                modalStage.initOwner(mainScene.getWindow());
+            }
+
+            modalStage.showAndWait(); // Exibe e espera o fechamento
+        } catch (IOException e) {
+            System.err.println("Error loading modal FXML file: " + fxmlFile);
+            e.printStackTrace();
         }
     }
 
