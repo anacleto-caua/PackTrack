@@ -13,8 +13,8 @@
         fx:controller="controller.DashboardController"
         maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="850.0" prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #f7f9fb;">
 
-    <!-- Painel de Navegação (Lado Direito) -->
-    <right>
+    <!-- Painel de Navegação (Lado Esquerdo) -->
+    <left>
         <VBox alignment="TOP_CENTER" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: #2d6a4f;" BorderPane.alignment="CENTER">
             <padding>
                 <Insets top="30.0" />
@@ -82,7 +82,7 @@
 
             </children>
         </VBox>
-    </right>
+    </left>
 
     <!-- Área de Conteúdo Principal (Centro / Body) -->
     <center>
