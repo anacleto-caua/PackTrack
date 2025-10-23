@@ -1,12 +1,10 @@
 package app;
 
-import controller.SupplierRegisterController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import manager.ViewManager;
-import service.SupplierService;
 
 import java.io.IOException;
 
@@ -15,18 +13,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        // ✅ FIX 1: Add the leading "/" to make the path absolute
         FXMLLoader fXMLloader = new FXMLLoader(App.class.getResource("/views/login.fxml"));
-
         Scene scene = new Scene(fXMLloader.load());
 
         ViewManager.setMainScene(scene);
 
-        // ✅ FIX 2: You must show the stage!
         stage.setTitle("PackTrack");
         stage.setScene(scene);
         stage.setResizable(true);
-        stage.show(); // This line actually opens the window
+        stage.show();
     }
 
     public static void main(String[] args) {
