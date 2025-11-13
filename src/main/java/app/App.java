@@ -21,6 +21,7 @@ public class App extends Application {
         stage.setTitle("PackTrack");
         stage.setScene(scene);
         stage.setResizable(true);
+        stage.setMaximized(true);
         stage.show();
     }
 
