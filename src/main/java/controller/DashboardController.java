@@ -1,11 +1,12 @@
 package controller;
 
+import controller.basis.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
 import manager.ViewManager;
 
-public class DashboardController {
+public class DashboardController extends Controller {
 
     @FXML
     private VBox contentBody;

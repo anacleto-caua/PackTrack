@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import interfaces.EmployeeDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.EmployeeService;
 
-public class EmployeeRegisterController {
+public class EmployeeRegisterController extends Controller {
     @FXML
     private TextField employeeName;
     @FXML
@@ -24,9 +25,7 @@ public class EmployeeRegisterController {
 
     @FXML
     public void onCancel(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     @FXML
@@ -44,9 +43,7 @@ public class EmployeeRegisterController {
 
         employeeService.save(employee);
 
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     public TextField getEmployeeName() {

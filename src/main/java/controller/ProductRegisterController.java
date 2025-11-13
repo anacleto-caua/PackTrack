@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import interfaces.ProductDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.ProductService;
 
-public class ProductRegisterController {
+public class ProductRegisterController extends Controller {
 
     @FXML
     private TextField productName;
@@ -22,9 +23,7 @@ public class ProductRegisterController {
 
     @FXML
     public void onCancel(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     @FXML
@@ -39,9 +38,7 @@ public class ProductRegisterController {
 
         productService.save(productDTO);
 
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     public TextField getProductName() {

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -7,7 +8,7 @@ import manager.ViewManager;
 
 import javax.swing.text.View;
 
-public class LoginController {
+public class LoginController extends Controller {
 
     @FXML
     private TextField username;

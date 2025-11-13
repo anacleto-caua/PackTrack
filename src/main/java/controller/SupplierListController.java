@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import interfaces.SupplierDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +9,7 @@ import javafx.scene.control.TableView;
 import manager.ViewManager;
 import utils.TableInitializer;
 
-public class SupplierListController {
+public class SupplierListController extends Controller {
 
     @FXML
     private TableView<SupplierDTO> supplierTable;

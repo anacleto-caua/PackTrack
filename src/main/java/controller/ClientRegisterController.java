@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import interfaces.ClientDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.ClientService;
 
-public class ClientRegisterController {
+public class ClientRegisterController extends Controller {
     @FXML
     private TextField clientName;
     @FXML
@@ -38,9 +39,7 @@ public class ClientRegisterController {
 
         clientService.save(clientDTO);
 
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     public TextField getClientName() {

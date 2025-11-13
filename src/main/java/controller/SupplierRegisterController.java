@@ -1,5 +1,6 @@
 package controller;
 
+import controller.basis.Controller;
 import interfaces.SupplierDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.SupplierService;
 
-public class SupplierRegisterController {
+public class SupplierRegisterController extends Controller {
     @FXML
     private TextField supplierName;
     @FXML
@@ -37,9 +38,7 @@ public class SupplierRegisterController {
 
         supplierService.save(supplierDTO);
 
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     @FXML
