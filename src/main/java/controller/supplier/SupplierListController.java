@@ -1,4 +1,4 @@
-package controller;
+package controller.supplier;
 
 import controller.basis.Controller;
 import interfaces.SupplierDTO;

@@ -1,12 +1,10 @@
-package controller;
+package controller.employee;
 
 import controller.basis.Controller;
 import interfaces.EmployeeDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import service.EmployeeService;
 
 public class EmployeeRegisterController extends Controller {

@@ -1,4 +1,4 @@
-package controller;
+package controller.product;
 
 import controller.basis.Controller;
 import interfaces.ProductDTO;

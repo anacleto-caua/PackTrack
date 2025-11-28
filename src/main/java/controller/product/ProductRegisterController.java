@@ -1,12 +1,10 @@
-package controller;
+package controller.product;
 
 import controller.basis.Controller;
 import interfaces.ProductDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import service.ProductService;
 
 public class ProductRegisterController extends Controller {

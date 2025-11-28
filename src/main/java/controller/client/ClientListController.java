@@ -1,4 +1,4 @@
-package controller;
+package controller.client;
 
 import controller.basis.Controller;
 import interfaces.ClientDTO;
