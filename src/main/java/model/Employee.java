@@ -1,18 +1,36 @@
 package model;
 
-import lombok.AllArgsConstructor;
+import enums.Roles;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "employee")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class Employee extends User {
+
+    @Column(name = "salary", nullable = false)
     private BigDecimal salary;
+
+    @Column(name = "hire_date", nullable = false)
     private Date hireDate;
+
+    // Better to write the constructor yourself for Inheritance related classes
+    Employee(Long id, String username, String password, String email, String phone, String cpf, List<Roles> roles, BigDecimal salary, Date hiredate) {
+        super(id, username, password, email, phone, cpf, roles); // Initialize Parent fields
+        this.salary = salary;
+        this.hireDate = new Date();
+    }
 }
