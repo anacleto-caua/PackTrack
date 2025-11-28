@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import manager.ViewManager;
-import utils.TableInitializer;
+import util.TableInitializer;
 
 public class EmployeeListController extends Controller  {
 

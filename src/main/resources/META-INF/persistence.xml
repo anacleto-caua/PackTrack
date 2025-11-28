@@ -3,10 +3,10 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-    <persistence-unit name="mySQLiteUnit">
+    <persistence-unit name="pack_track_unit">
         <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:pack_track_database.db?foreign_keys=true" />
             <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" />
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:mydata.db" />
             <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect" />
 
             <property name="hibernate.show_sql" value="true" />

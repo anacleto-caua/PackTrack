@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
