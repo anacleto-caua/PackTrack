@@ -24,7 +24,7 @@ public class LoginController extends Controller {
             System.out.println("SCENE IN CONTROLLER: " + ViewManager.getMainScene());
 
 
-            ViewManager.loadView("dashboard.fxml");
+            ViewManager.loadView("Dashboard.fxml");
 
         } else {
             System.out.println("Login failed!");

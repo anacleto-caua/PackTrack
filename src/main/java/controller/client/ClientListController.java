@@ -46,12 +46,12 @@ public class ClientListController extends Controller {
 
     private void handleDeleteClient(Client client) {
         System.out.println("Apagar cliente: " + client.getName());
-        ViewManager.showModal("ClientRegister.fxml", "Apagar " + client.getName());
+        ViewManager.showModal("client/ClientRegister.fxml", "Apagar " + client.getName());
     }
 
     private void handleUpdateClient(Client client) {
         System.out.println("Atualizar cliente: " + client.getName());
-        ViewManager.showModal("ClientRegister.fxml", "Atualizar " + client.getName());
+        ViewManager.showModal("client/ClientRegister.fxml", "Atualizar " + client.getName());
 
     }
 }

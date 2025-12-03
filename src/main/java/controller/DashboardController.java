@@ -20,28 +20,27 @@ public class DashboardController extends Controller {
     public void handleClients() {
         System.out.println("Navegar para: Gestão de Clientes");
 
-        ViewManager.swapVBox(contentBody, "ListClient.fxml");
+        ViewManager.swapVBox(contentBody, "client/ListClient.fxml");
     }
 
     @FXML
-    public void handleSupliers() {
+    public void handleSuppliers() {
         System.out.println("Navegar para: Gestão de Fornecedores");
 
-        ViewManager.swapVBox(contentBody, "ListSupplier.fxml");
+        ViewManager.swapVBox(contentBody, "supplier/ListSupplier.fxml");
     }
 
     @FXML
     public void handleEmployees() {
         System.out.println("Navegar para: Gestão de Funcionarios");
 
-        ViewManager.swapVBox(contentBody, "ListEmployee.fxml");
+        ViewManager.swapVBox(contentBody, "employee/ListEmployee.fxml");
     }
 
     @FXML
     public void handleProducts() {
         System.out.println("Navegar para: Gestão de Produtos");
 
-        ViewManager.swapVBox(contentBody, "ListProduct.fxml");
+        ViewManager.swapVBox(contentBody, "product/ListProduct.fxml");
     }
-
 }

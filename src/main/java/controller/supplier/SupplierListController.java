@@ -47,7 +47,7 @@ public class SupplierListController extends Controller {
     private void handleDeleteSupplier(Supplier supplier) {
         try {
             System.out.println("Apagar fornecedor: " + supplier.getName());
-            ViewManager.showModal("SupplierRegister.fxml", "Apagar " + supplier.getName());
+            ViewManager.showModal("supplier/SupplierRegister.fxml", "Apagar " + supplier.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class SupplierListController extends Controller {
     private void handleUpdateSupplier(Supplier supplier) {
         try {
             System.out.println("Atualizar fornecedor: " + supplier.getName());
-            ViewManager.showModal("SupplierRegister.fxml", "Atualizar " + supplier.getName());
+            ViewManager.showModal("supplier/SupplierRegister.fxml", "Atualizar " + supplier.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }

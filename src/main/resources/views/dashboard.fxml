@@ -41,7 +41,7 @@
 
                 <Button
                         onAction="#handleClients"
-                        text="Clients"
+                        text="Clientes"
                         prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
                         -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
                     <font>
@@ -51,7 +51,7 @@
 
                 <Button
                         onAction="#handleEmployees"
-                        text="Employees"
+                        text="Funcionários"
                         prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
                         -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
                     <font>
@@ -61,7 +61,7 @@
 
                 <Button
                         onAction="#handleProducts"
-                        text="Products"
+                        text="Produtos"
                         prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
                         -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
                     <font>
@@ -70,8 +70,8 @@
                 </Button>
 
                 <Button
-                        onAction="#handleSupliers"
-                        text="Suppliers"
+                        onAction="#handleSuppliers"
+                        text="Fornecedores"
                         prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
                         -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
                     <font>

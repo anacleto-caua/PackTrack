@@ -47,7 +47,7 @@ public class ProductListController extends Controller {
     private void handleDeleteProduct(Product product) {
         try {
             System.out.println("Apagar produto: " + product.getName());
-            ViewManager.showModal("ProductRegister.fxml", "Apagar " + product.getName());
+            ViewManager.showModal("product/ProductRegister.fxml", "Apagar " + product.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class ProductListController extends Controller {
     private void handleUpdateProduct(Product product) {
         try {
             System.out.println("Atualizar produto: " + product.getName());
-            ViewManager.showModal("ProductRegister.fxml", "Atualizar " + product.getName());
+            ViewManager.showModal("product/ProductRegister.fxml", "Atualizar " + product.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }

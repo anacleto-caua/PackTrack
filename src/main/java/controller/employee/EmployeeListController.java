@@ -54,7 +54,7 @@ public class EmployeeListController extends Controller  {
     private void handleDeleteEmployee(Employee employee) {
         try {
             System.out.println("Delete funcionário: " + employee.getUsername());
-            ViewManager.showModal("EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
+            ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class EmployeeListController extends Controller  {
     private void handleUpdateEmployee(Employee employee) {
         try {
             System.out.println("Atualizar funcionário: " + employee.getUsername());
-            ViewManager.showModal("EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
+            ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
         } catch (Exception e) {
             e.printStackTrace();
         }
