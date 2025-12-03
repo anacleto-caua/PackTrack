@@ -9,10 +9,6 @@ import javafx.scene.control.TableView;
 import manager.ViewManager;
 import model.Employee;
 import util.table.TableFactory;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class EmployeeListController extends Controller  {
@@ -20,7 +16,7 @@ public class EmployeeListController extends Controller  {
     @FXML
     private TableView<Employee> employeeTable;
 
-    private EmployeeDAO employeeDAO = new  EmployeeDAO();
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
 
     @FXML
     public void initialize() {
