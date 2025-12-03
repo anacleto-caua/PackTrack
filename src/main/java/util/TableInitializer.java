@@ -2,10 +2,7 @@ package util;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import java.lang.reflect.RecordComponent;
@@ -20,6 +17,12 @@ public class TableInitializer {
             Consumer<T> updateHandler
     ) {
         table.getColumns().clear();
+
+        // Fallback message for empty tables
+        Label emptyLabel = new Label("Nenhum registro encontrado.");
+        emptyLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #999;");
+        table.setPlaceholder(emptyLabel);
+
         double columnWidth = 150.0;
 
         for (RecordComponent component : dtoClass.getRecordComponents()) {
