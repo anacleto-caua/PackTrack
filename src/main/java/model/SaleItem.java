@@ -32,4 +32,8 @@ public class SaleItem {
 
     @Column(name = "unit_price", nullable = false)
     private BigDecimal priceAtMomentOfSale;
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
 }
