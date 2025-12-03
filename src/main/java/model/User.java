@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 //@AllArgsConstructor dangerous to inheritance related classes at Hibernate, better to avoid
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 

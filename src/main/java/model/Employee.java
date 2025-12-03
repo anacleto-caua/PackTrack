@@ -1,10 +1,7 @@
 package model;
 
 import enums.Roles;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +25,7 @@ public class Employee extends User {
     private Date hireDate;
 
     // Better to write the constructor yourself for Inheritance related classes
-    Employee(Long id, String username, String password, String email, String phone, String cpf, List<Roles> roles, BigDecimal salary, Date hiredate) {
+    public Employee(Long id, String username, String password, String email, String phone, String cpf, List<Roles> roles, BigDecimal salary, Date hiredate) {
         super(id, username, password, email, phone, cpf, roles); // Initialize Parent fields
         this.salary = salary;
         this.hireDate = new Date();
