@@ -1,48 +1,64 @@
 package controller.supplier;
 
 import controller.basis.Controller;
-import interfaces.SupplierDTO;
+import dao.SupplierDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import manager.ViewManager;
-import util.TableInitializer;
+import model.Supplier;
+import util.table.TableFactory;
+
+import java.util.List;
 
 public class SupplierListController extends Controller {
 
     @FXML
-    private TableView<SupplierDTO> supplierTable;
+    private TableView<Supplier> supplierTable;
+
+    private SupplierDAO supplierDAO = new SupplierDAO();
 
     @FXML
     public void initialize() {
-        TableInitializer.initializeTable(
-                supplierTable,
-                SupplierDTO.class,
-                this::handleDeleteSupplier,
-                this::handleUpdateSupplier
+
+        var columns = List.of(
+                TableFactory.Column.<Supplier>of("ID", s -> String.valueOf(s.getId())),
+                TableFactory.Column.<Supplier>of("Name", Supplier::getName),
+                TableFactory.Column.<Supplier>of("Contact", Supplier::getContact),
+                TableFactory.Column.<Supplier>of("Email", Supplier::getEmail)
         );
 
-        supplierTable.setItems(loadMockData());
+        TableFactory<Supplier> factory = new TableFactory<>(columns);
+        factory.initializeTable(supplierTable, this::handleDeleteSupplier, this::handleUpdateSupplier);
+
+        refreshTableData();
 
         ViewManager.loadStyle("style.css");
     }
 
-    private ObservableList<SupplierDTO> loadMockData() {
-        return FXCollections.observableArrayList(
-                new SupplierDTO("Fornecedor A", "contato@fornecedora.com", "(11) 2222-3333"),
-                new SupplierDTO("Distribuidora B", "vendas@distribuidorab.com", "(21) 4444-5555"),
-                new SupplierDTO("Importados C", "sac@importadosc.com", "(31) 6666-7777")
-        );
+    private void refreshTableData() {
+        List<Supplier> dbList = supplierDAO.findAll();
+        ObservableList<Supplier> observableList = FXCollections.observableArrayList(dbList);
+
+        supplierTable.setItems(observableList);
     }
 
-    private void handleDeleteSupplier(SupplierDTO supplier) {
-        System.out.println("Apagar fornecedor: " + supplier.name());
-        ViewManager.showModal("SupplierRegister.fxml", "Apagar " + supplier.name());
+    private void handleDeleteSupplier(Supplier supplier) {
+        try {
+            System.out.println("Apagar fornecedor: " + supplier.getName());
+            ViewManager.showModal("SupplierRegister.fxml", "Apagar " + supplier.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void handleUpdateSupplier(SupplierDTO supplier) {
-        System.out.println("Atualizar fornecedor: " + supplier.name());
-        ViewManager.showModal("SupplierRegister.fxml", "Atualizar " + supplier.name());
+    private void handleUpdateSupplier(Supplier supplier) {
+        try {
+            System.out.println("Atualizar fornecedor: " + supplier.getName());
+            ViewManager.showModal("SupplierRegister.fxml", "Atualizar " + supplier.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

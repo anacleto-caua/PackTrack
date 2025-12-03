@@ -1,50 +1,64 @@
 package controller.product;
 
 import controller.basis.Controller;
-import interfaces.ProductDTO;
+import dao.ProductDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import manager.ViewManager;
-import util.TableInitializer;
+import model.Product;
+import util.table.TableFactory;
+
+import java.util.List;
 
 public class ProductListController extends Controller {
 
     @FXML
-    private TableView<ProductDTO> productTable;
+    private TableView<Product> productTable;
+
+    private ProductDAO productDAO = new ProductDAO();
 
     @FXML
     public void initialize() {
-        TableInitializer.initializeTable(
-                productTable,
-                ProductDTO.class,
-                this::handleDeleteProduct,
-                this::handleUpdateProduct
+
+        var columns = List.of(
+                TableFactory.Column.<Product>of("ID", p -> String.valueOf(p.getId())),
+                TableFactory.Column.<Product>of("Name", Product::getName),
+                TableFactory.Column.<Product>of("Description", Product::getDescription),
+                TableFactory.Column.<Product>of("Value", p -> p.getValue() != null ? String.format("R$ %.2f", p.getValue()) : "R$ 0.00")
         );
 
-        productTable.setItems(loadMockData());
+        TableFactory<Product> factory = new TableFactory<>(columns);
+        factory.initializeTable(productTable, this::handleDeleteProduct, this::handleUpdateProduct);
+
+        refreshTableData();
 
         ViewManager.loadStyle("style.css");
     }
 
-    private ObservableList<ProductDTO> loadMockData() {
-        return FXCollections.observableArrayList(
-                new ProductDTO("Caixa Padrão", "Caixa de papelão reforçada 20x20x10cm", "R$ 5,50"),
-                new ProductDTO("Fita Adesiva", "Rolo de fita adesiva transparente (50m)", "R$ 12,90"),
-                new ProductDTO("Etiquetas", "Pacote com 100 etiquetas de remessa", "R$ 8,00"),
-                new ProductDTO("Envelopes A4", "Envelope de segurança acolchoado", "R$ 3,20"),
-                new ProductDTO("Pallet PBR", "Pallet de madeira para transporte padrão", "R$ 80,00")
-        );
+    private void refreshTableData() {
+        List<Product> dbList = productDAO.findAll();
+        ObservableList<Product> observableList = FXCollections.observableArrayList(dbList);
+
+        productTable.setItems(observableList);
     }
 
-    private void handleDeleteProduct(ProductDTO product) {
-        System.out.println("Apagar produto: " + product.name());
-        ViewManager.showModal("ProductRegister.fxml", "Apagar " + product.name());
+    private void handleDeleteProduct(Product product) {
+        try {
+            System.out.println("Apagar produto: " + product.getName());
+            ViewManager.showModal("ProductRegister.fxml", "Apagar " + product.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void handleUpdateProduct(ProductDTO product) {
-        System.out.println("Atualizar produto (simulando salvamento): " + product.name());
-        ViewManager.showModal("ProductRegister.fxml", "Atualizar " + product.name());
+    private void handleUpdateProduct(Product product) {
+        try {
+            System.out.println("Atualizar produto: " + product.getName());
+            ViewManager.showModal("ProductRegister.fxml", "Atualizar " + product.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

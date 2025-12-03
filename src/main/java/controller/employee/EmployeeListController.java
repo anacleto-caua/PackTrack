@@ -51,55 +51,6 @@ public class EmployeeListController extends Controller  {
         employeeTable.setItems(observableList);
     }
 
-    private ObservableList<Employee> loadMockData() {
-        return FXCollections.observableArrayList(
-                new Employee(
-                        1L,                                  // ID
-                        "joao.silva",                        // Username
-                        "senha123",                          // Password
-                        "joao.silva@email.com",              // Email
-                        "(11) 99999-0001",                   // Phone
-                        "111.111.111-11",                    // CPF
-                        new ArrayList<>(),                   // Roles (Empty List)
-                        new BigDecimal("2500.00"),           // Salary
-                        new Date()                           // HireDate
-                ),
-                new Employee(
-                        2L,
-                        "maria.oliveira",
-                        "senha456",
-                        "maria.o@email.com",
-                        "(11) 99999-0002",
-                        "222.222.222-22",
-                        new ArrayList<>(),                   // Roles (Empty List)
-                        new BigDecimal("5000.00"),
-                        new Date()
-                ),
-                new Employee(
-                        3L,
-                        "pedro.costa",
-                        "senha789",
-                        "pedro.costa@email.com",
-                        "(11) 99999-0003",
-                        "333.333.333-33",
-                        new ArrayList<>(),                   // Roles (Empty List)
-                        new BigDecimal("2600.00"),
-                        new Date()
-                ),
-                new Employee(
-                        4L,
-                        "sofia.pereira",
-                        "senha101",
-                        "sofia.p@email.com",
-                        "(11) 99999-0004",
-                        "444.444.444-44",
-                        new ArrayList<>(),                   // Roles (Empty List)
-                        new BigDecimal("1800.00"),
-                        new Date()
-                )
-        );
-    }
-
     private void handleDeleteEmployee(Employee employee) {
         try {
             System.out.println("Delete funcionário: " + employee.getUsername());
