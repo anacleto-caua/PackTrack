@@ -1,6 +1,7 @@
 package controller.employee;
 
 import controller.basis.Controller;
+import controller.client.ClientRegisterController;
 import dao.EmployeeDAO;
 import enums.Roles;
 import javafx.collections.FXCollections;
@@ -75,11 +76,10 @@ public class EmployeeListController extends Controller  {
     }
 
     private void handleUpdateEmployee(Employee employee) {
-        try {
-            System.out.println("Atualizar funcionário: " + employee.getUsername());
-            ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar Funcionario", rootPane,
+                (EmployeeRegisterController controller) -> {
+                    controller.setClient(employee);
+                });
+        refreshTableData();
     }
 }

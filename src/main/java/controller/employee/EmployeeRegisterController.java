@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.Client;
 import model.Employee;
 
 import java.math.BigDecimal;
@@ -33,6 +34,8 @@ public class EmployeeRegisterController extends Controller {
 
     EmployeeDAO employeeDAO = new EmployeeDAO();
 
+    Employee currentEmployee;
+
     @FXML
     public void initialize() {
         // Populate the ComboBox with the Roles Enum values on window load
@@ -48,23 +51,42 @@ public class EmployeeRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event) {
+        if (this.currentEmployee == null) {
+            this.currentEmployee = new Employee();
+        }
+
         BigDecimal salary = new BigDecimal(employeeSalary.getText().replace(",", "."));
 
-        Employee newEmployee = new Employee(
-                null,
-                employeeUsername.getText(),
-                employeePassword.getText(),
-                employeeEmail.getText(),
-                employeePhone.getText(),
-                employeeCpf.getText(),
-                employeeRole.getValue(),
-                salary,
-                new Date()
-        );
+        this.currentEmployee.setUsername(employeeUsername.getText());
+        this.currentEmployee.setEmail(employeeEmail.getText());
+        this.currentEmployee.setPassword(employeePassword.getText());
+        this.currentEmployee.setPhone(employeePhone.getText());
+        this.currentEmployee.setCpf(employeeCpf.getText());
+        this.currentEmployee.setRole(employeeRole.getValue());
+        this.currentEmployee.setSalary(salary);
 
-        employeeDAO.save(newEmployee);
+        if (this.currentEmployee.getId() == null) {
+            this.currentEmployee.setHireDate(new Date()); // TODO: fix this!!!
+            employeeDAO.save(this.currentEmployee);
+        } else {
+            employeeDAO.update(this.currentEmployee);
+        }
 
         this.closeWindow(event);
+    }
+
+    public void setClient(Employee employee) {
+        this.currentEmployee = employee;
+
+        if (employee != null) {
+            this.employeeUsername.setText(employee.getUsername());
+            this.employeeEmail.setText(employee.getEmail());
+            this.employeePassword.setText(employee.getPassword());
+            this.employeePhone.setText(employee.getPhone());
+            this.employeeCpf.setText(employee.getCpf());
+            this.employeeRole.setValue(employee.getRole());
+            this.employeeSalary.setText(employee.getSalary().toString());
+        }
     }
 
     public TextField getEmployeeUsername() { return employeeUsername; }
