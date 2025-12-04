@@ -1,6 +1,7 @@
 package controller.product;
 
 import controller.basis.Controller;
+import controller.employee.EmployeeRegisterController;
 import dao.ProductDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,11 +69,10 @@ public class ProductListController extends Controller {
     }
 
     private void handleUpdateProduct(Product product) {
-        try {
-            System.out.println("Atualizar produto: " + product.getName());
-            ViewManager.showModal("product/ProductRegister.fxml", "Atualizar " + product.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ViewManager.showModal("product/ProductRegister.fxml", "Atualizar Produto", rootPane,
+                (ProductRegisterController controller) -> {
+                    controller.setProduct(product);
+                });
+        refreshTableData();
     }
 }
