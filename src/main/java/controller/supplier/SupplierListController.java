@@ -1,6 +1,7 @@
 package controller.supplier;
 
 import controller.basis.Controller;
+import controller.product.ProductRegisterController;
 import dao.SupplierDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,11 +69,10 @@ public class SupplierListController extends Controller {
     }
 
     private void handleUpdateSupplier(Supplier supplier) {
-        try {
-            System.out.println("Atualizar fornecedor: " + supplier.getName());
-            ViewManager.showModal("supplier/SupplierRegister.fxml", "Atualizar " + supplier.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ViewManager.showModal("supplier/SupplierRegister.fxml", "Atualizar Fornecedor", rootPane,
+                (SupplierRegisterController controller) -> {
+                    controller.setSupplier(supplier);
+                });
+        refreshTableData();
     }
 }

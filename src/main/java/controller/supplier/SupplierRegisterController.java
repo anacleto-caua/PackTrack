@@ -2,7 +2,6 @@ package controller.supplier;
 
 import controller.basis.Controller;
 import dao.SupplierDAO;
-import interfaces.SupplierDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,6 +22,8 @@ public class SupplierRegisterController extends Controller {
 
     private SupplierDAO supplierDAO = new SupplierDAO();
 
+    private Supplier currentSupplier;
+
     @FXML
     public void onCancel(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -32,16 +33,31 @@ public class SupplierRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event){
-        Supplier supplier = new Supplier(
-                null,
-                supplierName.getText(),
-                supplierEmail.getText(),
-                supplierPhone.getText()
-        );
+        if (this.currentSupplier == null) {
+            this.currentSupplier = new Supplier();
+        }
 
-        supplierDAO.save(supplier);
+        this.currentSupplier.setName(supplierName.getText());
+        this.currentSupplier.setContact(supplierPhone.getText());
+        this.currentSupplier.setEmail(supplierEmail.getText());
+
+        if (this.currentSupplier.getId() == null) {
+            supplierDAO.save(this.currentSupplier);
+        } else {
+            supplierDAO.update(this.currentSupplier);
+        }
 
         this.closeWindow(event);
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.currentSupplier = supplier;
+
+        if (supplier != null) {
+            this.supplierName.setText(supplier.getName());
+            this.supplierPhone.setText(supplier.getContact());
+            this.supplierEmail.setText(supplier.getEmail());
+        }
     }
 
     @FXML

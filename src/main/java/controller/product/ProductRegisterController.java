@@ -5,7 +5,6 @@ import dao.ProductDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import model.Employee;
 import model.Product;
 
 import java.math.BigDecimal;
@@ -38,7 +37,6 @@ public class ProductRegisterController extends Controller {
             this.currentProduct = new Product();
         }
 
-        BigDecimal price = new BigDecimal(productPrice.getText());
         this.currentProduct.setName(productName.getText());
         this.currentProduct.setDescription(productDescription.getText());
         this.currentProduct.setValue(this.priceToBigDecimal(productPrice.getText()));
