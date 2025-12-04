@@ -45,12 +45,16 @@ public class ProductListController extends Controller {
     }
 
     private void handleDeleteProduct(Product product) {
-        try {
-            System.out.println("Apagar produto: " + product.getName());
-            ViewManager.showModal("product/ProductRegister.fxml", "Apagar " + product.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Runnable performDelete = () -> {
+            productDAO.delete(product.getId());
+            this.refreshTableData();
+        };
+
+        ViewManager.showConfirmDialog(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este registro?",
+            performDelete
+        );
     }
 
     private void handleUpdateProduct(Product product) {
