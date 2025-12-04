@@ -44,6 +44,7 @@ public class ClientListController extends Controller {
     @FXML
     public void openCreationModal() {
         ViewManager.showModal("client/ClientRegister.fxml", "Cadastrar Cliente", rootPane);
+        refreshTableData();
     }
 
     private void refreshTableData() {

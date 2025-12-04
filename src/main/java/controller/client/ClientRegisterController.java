@@ -1,12 +1,14 @@
 package controller.client;
 
 import controller.basis.Controller;
+import dao.ClientDAO;
 import interfaces.ClientDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Client;
 import service.ClientService;
 
 public class ClientRegisterController extends Controller {
@@ -19,6 +21,8 @@ public class ClientRegisterController extends Controller {
     @FXML
     private TextField clientAddress;
 
+    private ClientDAO clientDAO = new  ClientDAO();
+
     @FXML
     private void onCancel(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -28,16 +32,13 @@ public class ClientRegisterController extends Controller {
 
     @FXML
     private void onSubmit(ActionEvent event) {
-        ClientService clientService = new ClientService();
+        Client client = new Client();
 
-        ClientDTO clientDTO = new ClientDTO(
-                clientName.getText(),
-                clientEmail.getText(),
-                clientPhone.getText(),
-                clientAddress.getText()
-        );
+        client.setName(clientName.getText());
+        client.setEmail(clientEmail.getText());
+        client.setPhone(clientPhone.getText());
 
-        clientService.save(clientDTO);
+        clientDAO.save(client);
 
         this.closeWindow(event);
     }
