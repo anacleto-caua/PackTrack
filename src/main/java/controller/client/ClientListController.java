@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Client;
 import util.table.TableFactory;
@@ -16,6 +17,9 @@ public class ClientListController extends Controller {
 
     @FXML
     private TableView<Client> clientTable;
+
+    @FXML
+    private VBox rootPane;
 
     private ClientDAO clientDAO = new  ClientDAO();
 
@@ -35,6 +39,11 @@ public class ClientListController extends Controller {
         refreshTableData();
 
         ViewManager.loadStyle("style.css");
+    }
+
+    @FXML
+    public void openCreationModal() {
+        ViewManager.showModal("client/ClientRegister.fxml", "Cadastrar Cliente", rootPane);
     }
 
     private void refreshTableData() {
