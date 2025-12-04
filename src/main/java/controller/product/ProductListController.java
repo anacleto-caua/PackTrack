@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Product;
 import util.table.TableFactory;
@@ -16,6 +17,9 @@ public class ProductListController extends Controller {
 
     @FXML
     private TableView<Product> productTable;
+
+    @FXML
+    private VBox rootPane;
 
     private ProductDAO productDAO = new ProductDAO();
 
@@ -35,6 +39,12 @@ public class ProductListController extends Controller {
         refreshTableData();
 
         ViewManager.loadStyle("style.css");
+    }
+
+    @FXML
+    public void openCreationModal() {
+        ViewManager.showModal("product/ProductRegister.fxml", "Cadastrar Produto", rootPane);
+        refreshTableData();
     }
 
     private void refreshTableData() {

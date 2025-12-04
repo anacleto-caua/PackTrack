@@ -1,11 +1,13 @@
 package controller.product;
 
 import controller.basis.Controller;
-import interfaces.ProductDTO;
+import dao.ProductDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import service.ProductService;
+import model.Product;
+
+import java.math.BigDecimal;
 
 public class ProductRegisterController extends Controller {
 
@@ -19,6 +21,8 @@ public class ProductRegisterController extends Controller {
     @FXML
     private TextField productPrice;
 
+    private ProductDAO productDAO = new ProductDAO();
+
     @FXML
     public void onCancel(ActionEvent event) {
         this.closeWindow(event);
@@ -26,15 +30,18 @@ public class ProductRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event){
-        ProductService productService = new ProductService();
 
-        ProductDTO productDTO = new ProductDTO(
-                productName.getText(),
-                productDescription.getText(),
-                productPrice.getText()
+        String priceText = productPrice.getText().replace(",", ".");
+        BigDecimal finalPrice = new BigDecimal(priceText);
+
+        Product product = new Product(
+            null,
+            productName.getText(),
+            productDescription.getText(),
+            finalPrice
         );
 
-        productService.save(productDTO);
+        productDAO.save(product);
 
         this.closeWindow(event);
     }
