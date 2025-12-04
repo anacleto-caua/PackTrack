@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import manager.ViewManager;
+import service.EmployeeService;
 
 import javax.swing.text.View;
 
@@ -16,16 +17,14 @@ public class LoginController extends Controller {
     @FXML
     private PasswordField password;
 
+    EmployeeService employeeService = new EmployeeService();
+
     @FXML
     protected void handleLoginButtonAction() {
-        if (username.getText().equals("adm") && password.getText().equals("123")) {
-            System.out.println("Successful login!");
-
-            System.out.println("SCENE IN CONTROLLER: " + ViewManager.getMainScene());
-
-
+        var loggedEmployee = employeeService.tryLogin(username.getText(), password.getText());
+        if (loggedEmployee != null) {
+            System.out.println("Successful login! From: " + loggedEmployee.getUsername());
             ViewManager.loadView("Dashboard.fxml");
-
         } else {
             System.out.println("Login failed!");
         }
