@@ -70,6 +70,12 @@ public class ViewManager {
         }
     }
 
+    public static void showModal(String fxmlFile, String title, VBox rootPane) {
+        rootPane.setOpacity(0.4);
+        showModal(fxmlFile, title);
+        rootPane.setOpacity(1);
+    }
+
     public static void showModal(String fxmlFile, String title) {
         try {
             String fxmlPath = "/views/" + fxmlFile;
