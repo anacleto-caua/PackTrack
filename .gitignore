@@ -37,5 +37,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Db history ###
+### Database ###
+pack_track_database.db
 pack_track_database.db-journal
