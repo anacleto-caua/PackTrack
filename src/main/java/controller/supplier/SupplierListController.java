@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Supplier;
 import util.table.TableFactory;
@@ -16,6 +17,9 @@ public class SupplierListController extends Controller {
 
     @FXML
     private TableView<Supplier> supplierTable;
+
+    @FXML
+    private VBox rootPane;
 
     private SupplierDAO supplierDAO = new SupplierDAO();
 
@@ -35,6 +39,12 @@ public class SupplierListController extends Controller {
         refreshTableData();
 
         ViewManager.loadStyle("style.css");
+    }
+
+    @FXML
+    public void openCreationModal() {
+        ViewManager.showModal("supplier/SupplierRegister.fxml", "Cadastrar Funcionario", rootPane);
+        refreshTableData();
     }
 
     private void refreshTableData() {

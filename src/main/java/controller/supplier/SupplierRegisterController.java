@@ -1,12 +1,14 @@
 package controller.supplier;
 
 import controller.basis.Controller;
+import dao.SupplierDAO;
 import interfaces.SupplierDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Supplier;
 import service.SupplierService;
 
 public class SupplierRegisterController extends Controller {
@@ -19,6 +21,8 @@ public class SupplierRegisterController extends Controller {
     @FXML
     private TextField supplierEmail;
 
+    private SupplierDAO supplierDAO = new SupplierDAO();
+
     @FXML
     public void onCancel(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -28,15 +32,14 @@ public class SupplierRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event){
-        SupplierService supplierService = new SupplierService();
-        
-        SupplierDTO supplierDTO = new SupplierDTO(
+        Supplier supplier = new Supplier(
+                null,
                 supplierName.getText(),
                 supplierEmail.getText(),
                 supplierPhone.getText()
         );
 
-        supplierService.save(supplierDTO);
+        supplierDAO.save(supplier);
 
         this.closeWindow(event);
     }
