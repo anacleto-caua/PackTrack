@@ -7,10 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Client;
 
 import java.io.IOException;
 import java.security.PublicKey;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ViewManager {
 
@@ -71,6 +73,37 @@ public class ViewManager {
         if (loadedView != null) {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(loadedView);
+        }
+    }
+    public static <T> void showModal(String fxmlFile, String title, VBox rootPane, Consumer<T> initializer) {
+        try {
+            rootPane.setOpacity(0.4);
+            String fxmlPath = "/views/" + fxmlFile;
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(fxmlPath));
+            Parent root = loader.load();
+
+            //capture the controller
+            T controller = loader.getController();
+
+            if (initializer != null) {
+                initializer.accept(controller);
+            }
+
+            Stage modalStage = new Stage();
+            modalStage.setTitle(title);
+            modalStage.setScene(new Scene(root));
+
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+
+            if (mainScene != null) {
+                modalStage.initOwner(mainScene.getWindow());
+            }
+
+            modalStage.showAndWait(); // Exibe e espera o fechamento
+            rootPane.setOpacity(1);
+        } catch (IOException e) {
+            System.err.println("Error loading modal FXML file: " + fxmlFile);
+            e.printStackTrace();
         }
     }
 

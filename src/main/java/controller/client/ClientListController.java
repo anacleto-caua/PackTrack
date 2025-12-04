@@ -68,8 +68,10 @@ public class ClientListController extends Controller {
     }
 
     private void handleUpdateClient(Client client) {
-        System.out.println("Atualizar cliente: " + client.getName());
-        ViewManager.showModal("client/ClientRegister.fxml", "Atualizar " + client.getName());
-
+        ViewManager.showModal("client/ClientRegister.fxml", "Atualizar Cliente", rootPane,
+                (ClientRegisterController controller) -> {
+                    controller.setClient(client);
+                });
+        refreshTableData();
     }
 }

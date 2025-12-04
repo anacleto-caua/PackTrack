@@ -23,6 +23,8 @@ public class ClientRegisterController extends Controller {
 
     private ClientDAO clientDAO = new  ClientDAO();
 
+    private Client currentClient;
+
     @FXML
     private void onCancel(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -32,15 +34,32 @@ public class ClientRegisterController extends Controller {
 
     @FXML
     private void onSubmit(ActionEvent event) {
-        Client client = new Client();
+        if (this.currentClient == null) {
+            this.currentClient = new Client();
+        }
 
-        client.setName(clientName.getText());
-        client.setEmail(clientEmail.getText());
-        client.setPhone(clientPhone.getText());
+        this.currentClient.setName(clientName.getText());
+        this.currentClient.setEmail(clientEmail.getText());
+        this.currentClient.setPhone(clientPhone.getText());
 
-        clientDAO.save(client);
+        if (this.currentClient.getId() == null) {
+            clientDAO.save(this.currentClient);
+        } else {
+            clientDAO.update(this.currentClient);
+        }
+
 
         this.closeWindow(event);
+    }
+
+    public void setClient(Client client) {
+        this.currentClient = client;
+
+        if (client != null) {
+            this.clientName.setText(client.getName());
+            this.clientEmail.setText(client.getEmail());
+            this.clientPhone.setText(client.getPhone());
+        }
     }
 
     public TextField getClientName() {
