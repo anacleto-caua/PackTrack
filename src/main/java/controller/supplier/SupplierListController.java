@@ -45,12 +45,16 @@ public class SupplierListController extends Controller {
     }
 
     private void handleDeleteSupplier(Supplier supplier) {
-        try {
-            System.out.println("Apagar fornecedor: " + supplier.getName());
-            ViewManager.showModal("supplier/SupplierRegister.fxml", "Apagar " + supplier.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Runnable performDelete = () -> {
+            supplierDAO.delete(supplier.getId());
+            this.refreshTableData();
+        };
+
+        ViewManager.showConfirmDialog(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este registro?",
+            performDelete
+        );
     }
 
     private void handleUpdateSupplier(Supplier supplier) {

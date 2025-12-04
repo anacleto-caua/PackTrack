@@ -45,8 +45,16 @@ public class ClientListController extends Controller {
     }
 
     private void handleDeleteClient(Client client) {
-        System.out.println("Apagar cliente: " + client.getName());
-        ViewManager.showModal("client/ClientRegister.fxml", "Apagar " + client.getName());
+        Runnable performDelete = () -> {
+            clientDAO.delete(client.getId());
+            this.refreshTableData();
+        };
+
+        ViewManager.showConfirmDialog(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este registro?",
+            performDelete
+        );
     }
 
     private void handleUpdateClient(Client client) {

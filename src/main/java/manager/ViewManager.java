@@ -1,5 +1,6 @@
 package manager;
 
+import controller.ConfirmModalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,9 +9,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.Objects;
 
 public class ViewManager {
+
+    private static String MODAL_VIEW_NAME = "ConfirmModal.fxml";
 
     private static final ViewManager instance = new ViewManager();
 
@@ -95,6 +99,35 @@ public class ViewManager {
             modalStage.showAndWait(); // Exibe e espera o fechamento
         } catch (IOException e) {
             System.err.println("Error loading modal FXML file: " + fxmlFile);
+            e.printStackTrace();
+        }
+    }
+
+    public static void showConfirmDialog(String title, String message, Runnable onConfirmAction) {
+        try {
+            String fxmlPath = "/views/" + MODAL_VIEW_NAME;
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Object controller = loader.getController();
+
+            if (controller instanceof ConfirmModalController) {
+                ((ConfirmModalController) controller).setContent(message, onConfirmAction);
+            }
+
+            Stage modalStage = new Stage();
+            modalStage.setTitle(title);
+            modalStage.setScene(new Scene(root));
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+
+            if (mainScene != null) {
+                modalStage.initOwner(mainScene.getWindow());
+            }
+
+            modalStage.showAndWait();
+
+        } catch (IOException e) {
+            System.err.println("Error loading confirm modal!");
             e.printStackTrace();
         }
     }

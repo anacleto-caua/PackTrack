@@ -48,12 +48,16 @@ public class EmployeeListController extends Controller  {
     }
 
     private void handleDeleteEmployee(Employee employee) {
-        try {
-            System.out.println("Delete funcionário: " + employee.getUsername());
-            ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar " + employee.getUsername());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Runnable performDelete = () -> {
+            employeeDAO.delete(employee.getId());
+            this.refreshTableData();
+        };
+
+        ViewManager.showConfirmDialog(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este registro?",
+            performDelete
+        );
     }
 
     private void handleUpdateEmployee(Employee employee) {
