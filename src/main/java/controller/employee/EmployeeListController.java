@@ -2,19 +2,27 @@ package controller.employee;
 
 import controller.basis.Controller;
 import dao.EmployeeDAO;
+import enums.Roles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Employee;
 import util.table.TableFactory;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class EmployeeListController extends Controller  {
 
     @FXML
     private TableView<Employee> employeeTable;
+
+    @FXML
+    private VBox rootPane;
 
     private EmployeeDAO employeeDAO = new EmployeeDAO();
 
@@ -27,9 +35,9 @@ public class EmployeeListController extends Controller  {
                 TableFactory.Column.<Employee>of("Email", Employee::getEmail),
                 TableFactory.Column.<Employee>of("Phone", Employee::getPhone),
                 TableFactory.Column.<Employee>of("CPF", Employee::getCpf),
-                TableFactory.Column.<Employee>of("Roles", e -> e.getRoles() != null ? e.getRoles().toString() : "[]"),
+                TableFactory.Column.<Employee>of("Roles",  e -> String.valueOf(e.getRole())),
                 TableFactory.Column.<Employee>of("Salary", e -> e.getSalary() != null ? String.format("R$ %.2f", e.getSalary()) : "R$ 0.00"),
-                TableFactory.Column.<Employee>of("Hire Date", e -> e.getHireDate() != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(e.getHireDate()) : "")
+                TableFactory.Column.<Employee>of("Hire Date", e -> e.getHireDate() != null ? new SimpleDateFormat("dd/MM/yyyy").format(e.getHireDate()) : "")
         );
 
         TableFactory<Employee> factory = new TableFactory<>(columns);
@@ -38,6 +46,12 @@ public class EmployeeListController extends Controller  {
         refreshTableData();
 
         ViewManager.loadStyle("style.css");
+    }
+
+    @FXML
+    public void openCreationModal() {
+        ViewManager.showModal("employee/EmployeeRegister.fxml", "Cadastrar Funcionario", rootPane);
+        refreshTableData();
     }
 
     private void refreshTableData() {

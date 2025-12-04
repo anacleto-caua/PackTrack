@@ -25,8 +25,8 @@ public class Employee extends User {
     private Date hireDate;
 
     // Better to write the constructor yourself for Inheritance related classes
-    public Employee(Long id, String username, String password, String email, String phone, String cpf, List<Roles> roles, BigDecimal salary, Date hiredate) {
-        super(id, username, password, email, phone, cpf, roles); // Initialize Parent fields
+    public Employee(Long id, String username, String password, String email, String phone, String cpf, Roles role, BigDecimal salary, Date hiredate) {
+        super(id, username, password, email, phone, cpf, role); // Initialize Parent fields
         this.salary = salary;
         this.hireDate = new Date();
     }
