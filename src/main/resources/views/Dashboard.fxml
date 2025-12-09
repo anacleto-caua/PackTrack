@@ -79,6 +79,16 @@
                     </font>
                 </Button>
 
+                <Button
+                        onAction="#handleSales"
+                        text="Vendas"
+                        prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #40916c;
+                        -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8;" textAlignment="LEFT">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
 
             </children>
         </VBox>
