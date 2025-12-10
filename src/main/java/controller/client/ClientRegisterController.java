@@ -1,16 +1,19 @@
 package controller.client;
 
 import controller.basis.Controller;
-import dao.ClientDAO;
-import interfaces.ClientDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import model.Client;
 import service.ClientService;
 
+import java.util.ArrayList;
+
+@Getter
+@Setter
 public class ClientRegisterController extends Controller {
     @FXML
     private TextField clientName;
@@ -20,36 +23,34 @@ public class ClientRegisterController extends Controller {
     private TextField clientPhone;
     @FXML
     private TextField clientAddress;
-
-    private ClientDAO clientDAO = new  ClientDAO();
+    @FXML
+    private Label errorLabel;
 
     private Client currentClient;
 
+    private ClientService clientService = new ClientService();
+
     @FXML
     private void onCancel(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        this.closeWindow(event);
     }
 
     @FXML
     private void onSubmit(ActionEvent event) {
-        if (this.currentClient == null) {
-            this.currentClient = new Client();
-        }
+        ArrayList<String> errors =
+                clientService.saveOrUpdate(
+                        currentClient,
+                        clientName.getText(),
+                        clientEmail.getText(),
+                        clientPhone.getText()
+                );
 
-        this.currentClient.setName(clientName.getText());
-        this.currentClient.setEmail(clientEmail.getText());
-        this.currentClient.setPhone(clientPhone.getText());
-
-        if (this.currentClient.getId() == null) {
-            clientDAO.save(this.currentClient);
+        if(errors.isEmpty()) {
+            this.closeWindow(event);
         } else {
-            clientDAO.update(this.currentClient);
+            errorLabel.setText(String.join("\n", errors));
+            errorLabel.setVisible(true);
         }
-
-
-        this.closeWindow(event);
     }
 
     public void setClient(Client client) {
@@ -60,37 +61,5 @@ public class ClientRegisterController extends Controller {
             this.clientEmail.setText(client.getEmail());
             this.clientPhone.setText(client.getPhone());
         }
-    }
-
-    public TextField getClientName() {
-        return clientName;
-    }
-
-    public TextField getClientEmail() {
-        return clientEmail;
-    }
-
-    public TextField getClientPhone() {
-        return clientPhone;
-    }
-
-    public TextField getClientAddress() {
-        return clientAddress;
-    }
-
-    public void setClientName(TextField clientName) {
-        this.clientName = clientName;
-    }
-
-    public void setClientPhone(TextField clientPhone) {
-        this.clientPhone = clientPhone;
-    }
-
-    public void setClientEmail(TextField clientEmail) {
-        this.clientEmail = clientEmail;
-    }
-
-    public void setClientAddress(TextField clientAddress) {
-        this.clientAddress = clientAddress;
     }
 }
