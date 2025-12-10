@@ -30,6 +30,12 @@ public class DashboardController extends Controller {
         ViewManager.swapVBox(contentBody, "supplier/ListSupplier.fxml");
     }
 
+    public void handleSales() {
+        System.out.println("Navegar para: Gestão de Vendas");
+
+        ViewManager.swapVBox(contentBody, "sales/ListSales.fxml");
+    }
+
     @FXML
     public void handleEmployees() {
         System.out.println("Navegar para: Gestão de Funcionarios");
