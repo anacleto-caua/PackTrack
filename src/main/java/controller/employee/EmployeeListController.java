@@ -3,7 +3,6 @@ package controller.employee;
 import controller.basis.Controller;
 import controller.client.ClientRegisterController;
 import dao.EmployeeDAO;
-import enums.Roles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,11 +10,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Employee;
+import service.EmployeeService;
 import util.table.TableFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Objects;
 
 public class EmployeeListController extends Controller  {
 
@@ -25,7 +24,7 @@ public class EmployeeListController extends Controller  {
     @FXML
     private VBox rootPane;
 
-    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private EmployeeService employeeService = new EmployeeService();
 
     @FXML
     public void initialize() {
@@ -56,15 +55,12 @@ public class EmployeeListController extends Controller  {
     }
 
     private void refreshTableData() {
-        List<Employee> dbList = employeeDAO.findAll();
-        ObservableList<Employee> observableList = FXCollections.observableArrayList(dbList);
-
-        employeeTable.setItems(observableList);
+        employeeTable.setItems(employeeService.getEmployeesList());
     }
 
     private void handleDeleteEmployee(Employee employee) {
         Runnable performDelete = () -> {
-            employeeDAO.delete(employee.getId());
+            employeeService.delete(employee);
             this.refreshTableData();
         };
 
@@ -78,7 +74,7 @@ public class EmployeeListController extends Controller  {
     private void handleUpdateEmployee(Employee employee) {
         ViewManager.showModal("employee/EmployeeRegister.fxml", "Atualizar Funcionario", rootPane,
                 (EmployeeRegisterController controller) -> {
-                    controller.setClient(employee);
+                    controller.setEmployee(employee);
                 });
         refreshTableData();
     }

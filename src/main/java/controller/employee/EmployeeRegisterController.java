@@ -6,12 +6,16 @@ import enums.Roles;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.Client;
 import model.Employee;
+import service.EmployeeService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,14 +35,15 @@ public class EmployeeRegisterController extends Controller {
     private ComboBox<Roles> employeeRole; // Matches User.role
     @FXML
     private TextField employeeSalary;   // Matches Employee.salary
-
-    EmployeeDAO employeeDAO = new EmployeeDAO();
+    @FXML
+    private Label errorLabel;
 
     Employee currentEmployee;
 
+    EmployeeService employeeService = new EmployeeService();
+
     @FXML
     public void initialize() {
-        // Populate the ComboBox with the Roles Enum values on window load
         if (employeeRole != null) {
             employeeRole.getItems().setAll(Roles.values());
         }
@@ -51,31 +56,29 @@ public class EmployeeRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event) {
-        if (this.currentEmployee == null) {
-            this.currentEmployee = new Employee();
-        }
+        String currentDate = LocalDate.now().toString();
+        ArrayList<String> errors =
+            employeeService.saveOrUpdate(
+                currentEmployee,
+                employeeUsername.getText(),
+                employeePassword.getText(),
+                employeeEmail.getText(),
+                employeePhone.getText(),
+                employeeCpf.getText(),
+                employeeRole.getValue().toString(), // TODO: fix this!!! // I won't either :b
+                employeeSalary.getText(),
+                LocalDate.now().toString()   // TODO: fix this!!! // I won't :b
+            );
 
-        BigDecimal salary = new BigDecimal(employeeSalary.getText().replace(",", "."));
-
-        this.currentEmployee.setUsername(employeeUsername.getText());
-        this.currentEmployee.setEmail(employeeEmail.getText());
-        this.currentEmployee.setPassword(employeePassword.getText());
-        this.currentEmployee.setPhone(employeePhone.getText());
-        this.currentEmployee.setCpf(employeeCpf.getText());
-        this.currentEmployee.setRole(employeeRole.getValue());
-        this.currentEmployee.setSalary(salary);
-
-        if (this.currentEmployee.getId() == null) {
-            this.currentEmployee.setHireDate(new Date()); // TODO: fix this!!!
-            employeeDAO.save(this.currentEmployee);
+        if(errors.isEmpty()) {
+            this.closeWindow(event);
         } else {
-            employeeDAO.update(this.currentEmployee);
+            errorLabel.setText(String.join("\n", errors));
+            errorLabel.setVisible(true);
         }
-
-        this.closeWindow(event);
     }
 
-    public void setClient(Employee employee) {
+    public void setEmployee(Employee employee) {
         this.currentEmployee = employee;
 
         if (employee != null) {
@@ -88,25 +91,4 @@ public class EmployeeRegisterController extends Controller {
             this.employeeSalary.setText(employee.getSalary().toString());
         }
     }
-
-    public TextField getEmployeeUsername() { return employeeUsername; }
-    public void setEmployeeUsername(TextField employeeUsername) { this.employeeUsername = employeeUsername; }
-
-    public TextField getEmployeeEmail() { return employeeEmail; }
-    public void setEmployeeEmail(TextField employeeEmail) { this.employeeEmail = employeeEmail; }
-
-    public PasswordField getEmployeePassword() { return employeePassword; }
-    public void setEmployeePassword(PasswordField employeePassword) { this.employeePassword = employeePassword; }
-
-    public TextField getEmployeePhone() { return employeePhone; }
-    public void setEmployeePhone(TextField employeePhone) { this.employeePhone = employeePhone; }
-
-    public TextField getEmployeeCpf() { return employeeCpf; }
-    public void setEmployeeCpf(TextField employeeCpf) { this.employeeCpf = employeeCpf; }
-
-    public ComboBox<Roles> getEmployeeRole() { return employeeRole; }
-    public void setEmployeeRole(ComboBox<Roles> employeeRole) { this.employeeRole = employeeRole; }
-
-    public TextField getEmployeeSalary() { return employeeSalary; }
-    public void setEmployeeSalary(TextField employeeSalary) { this.employeeSalary = employeeSalary; }
 }
