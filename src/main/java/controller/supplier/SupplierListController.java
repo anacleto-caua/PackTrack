@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Supplier;
+import service.SupplierService;
 import util.table.TableFactory;
 
 import java.util.List;
@@ -18,11 +19,10 @@ public class SupplierListController extends Controller {
 
     @FXML
     private TableView<Supplier> supplierTable;
-
     @FXML
     private VBox rootPane;
 
-    private SupplierDAO supplierDAO = new SupplierDAO();
+    private SupplierService supplierService = new SupplierService();
 
     @FXML
     public void initialize() {
@@ -44,20 +44,17 @@ public class SupplierListController extends Controller {
 
     @FXML
     public void openCreationModal() {
-        ViewManager.showModal("supplier/SupplierRegister.fxml", "Cadastrar Funcionario", rootPane);
+        ViewManager.showModal("supplier/SupplierRegister.fxml", "Cadastrar Fornecedor", rootPane);
         refreshTableData();
     }
 
     private void refreshTableData() {
-        List<Supplier> dbList = supplierDAO.findAll();
-        ObservableList<Supplier> observableList = FXCollections.observableArrayList(dbList);
-
-        supplierTable.setItems(observableList);
+        supplierTable.setItems(supplierService.getSuppliersList());
     }
 
     private void handleDeleteSupplier(Supplier supplier) {
         Runnable performDelete = () -> {
-            supplierDAO.delete(supplier.getId());
+            supplierService.delete(supplier);
             this.refreshTableData();
         };
 
