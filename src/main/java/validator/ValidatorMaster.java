@@ -1,5 +1,6 @@
 package validator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -60,11 +61,29 @@ public class ValidatorMaster {
         return errors;
     }
 
+    // Strict validation (max 2 decimal places, positive only) via Regex
     public static ArrayList<String> isDecimal(String value) {
         ArrayList<String> errors = new ArrayList<>();
         if (value != null && !DECIMAL_PATTERN.matcher(value).matches()) {
             errors.add("Valor numérico inválido (use ponto para decimais, ex: 1500.00)");
         }
+        return errors;
+    }
+
+    public static ArrayList<String> isBigDecimal(String value) {
+        ArrayList<String> errors = new ArrayList<>();
+
+        // We skip validation if empty/null because notEmpty() handles that check.
+        if (value == null || value.trim().isEmpty()) {
+            return errors;
+        }
+
+        try {
+            new BigDecimal(value);
+        } catch (NumberFormatException e) {
+            errors.add("O valor deve ser um número válido (ex: 10.50)");
+        }
+
         return errors;
     }
 

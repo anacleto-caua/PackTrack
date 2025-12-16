@@ -4,26 +4,28 @@ import controller.basis.Controller;
 import dao.ProductDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Product;
+import service.ProductService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class ProductRegisterController extends Controller {
 
     @FXML
     private TextField productName;
-
     @FXML
     private TextField productDescription;
-
-    // TODO: CHANGE TEXTFIELD TO A MORE SUITABLE FIELD
     @FXML
-    private TextField productPrice;
-
-    private ProductDAO productDAO = new ProductDAO();
+    private TextField productPrice; // TODO: CHANGE FROM TEXTFIELD TO A MORE SUITABLE FIELD
+    @FXML
+    private Label errorLabel;
 
     private Product currentProduct;
+
+    private ProductService productService = new ProductService();
 
     @FXML
     public void onCancel(ActionEvent event) {
@@ -36,18 +38,20 @@ public class ProductRegisterController extends Controller {
         if (this.currentProduct == null) {
             this.currentProduct = new Product();
         }
+        ArrayList<String> errors =
+            productService.saveOrUpdate(
+                currentProduct,
+                productName.getText(),
+                productDescription.getText(),
+                productPrice.getText()
+            );
 
-        this.currentProduct.setName(productName.getText());
-        this.currentProduct.setDescription(productDescription.getText());
-        this.currentProduct.setValue(this.priceToBigDecimal(productPrice.getText()));
-
-        if (this.currentProduct.getId() == null) {
-            productDAO.save(this.currentProduct);
+        if(errors.isEmpty()) {
+            this.closeWindow(event);
         } else {
-            productDAO.update(this.currentProduct);
+            errorLabel.setText(String.join("\n", errors));
+            errorLabel.setVisible(true);
         }
-
-        this.closeWindow(event);
     }
 
     public void setProduct(Product product) {
@@ -58,37 +62,5 @@ public class ProductRegisterController extends Controller {
             this.productDescription.setText(product.getDescription());
             this.productPrice.setText(product.getValue().toString());
         }
-    }
-
-    private BigDecimal priceToBigDecimal(String priceText) {
-        if (priceText == null || priceText.isEmpty()) {
-            return new BigDecimal(0);
-        }
-        String price = priceText.replace(",", ".");
-        return new BigDecimal(price);
-    }
-
-    public TextField getProductName() {
-        return productName;
-    }
-
-    public TextField getProductDescription() {
-        return productDescription;
-    }
-
-    public TextField getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductName(TextField productName) {
-        this.productName = productName;
-    }
-
-    public void setProductDescription(TextField productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public void setProductPrice(TextField productPrice) {
-        this.productPrice = productPrice;
     }
 }

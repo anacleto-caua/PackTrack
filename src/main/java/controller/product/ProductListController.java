@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import manager.ViewManager;
 import model.Product;
+import service.ProductService;
 import util.table.TableFactory;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ProductListController extends Controller {
     @FXML
     private VBox rootPane;
 
-    private ProductDAO productDAO = new ProductDAO();
+    private ProductService productService = new ProductService();
 
     @FXML
     public void initialize() {
@@ -49,15 +50,14 @@ public class ProductListController extends Controller {
     }
 
     private void refreshTableData() {
-        List<Product> dbList = productDAO.findAll();
-        ObservableList<Product> observableList = FXCollections.observableArrayList(dbList);
+        ObservableList<Product> observableList = productService.getProductsList();
 
         productTable.setItems(observableList);
     }
 
     private void handleDeleteProduct(Product product) {
         Runnable performDelete = () -> {
-            productDAO.delete(product.getId());
+            productService.delete(product);
             this.refreshTableData();
         };
 
