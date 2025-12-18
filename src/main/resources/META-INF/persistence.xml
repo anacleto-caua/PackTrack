@@ -20,6 +20,8 @@
             <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" />
             <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect" />
 
+            <property name="jakarta.persistence.validation.mode" value="none" />
+
             <property name="hibernate.show_sql" value="true" />
 
             <property name="hibernate.hbm2ddl.auto" value="update" />

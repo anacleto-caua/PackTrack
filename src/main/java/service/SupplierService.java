@@ -1,17 +1,26 @@
 package service;
 
 import dao.SupplierDAO;
+import jakarta.validation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Supplier;
-import validator.ValidatorMaster;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SupplierService {
 
     private SupplierDAO supplierDAO = new SupplierDAO();
+
+    // TODO: Make a propper factory
+    private final Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory()
+            .getValidator();
 
     public void save(Supplier supplier) {
         supplierDAO.save(supplier);
@@ -30,32 +39,25 @@ public class SupplierService {
         return FXCollections.observableArrayList(dbList);
     }
 
-    public ArrayList<String> saveOrUpdate(Supplier supplier, String name, String contact, String email) {
-        ArrayList<String> errors = new ArrayList<>();
-
-        errors.addAll(ValidatorMaster.notEmpty(name));
-        errors.addAll(ValidatorMaster.notEmpty(contact));
-        errors.addAll(ValidatorMaster.isPhoneNumber(contact));
-        errors.addAll(ValidatorMaster.isEmail(email));
-
-        if (!errors.isEmpty()) {
-            return errors;
-        }
-
-        if (supplier == null) {
-            supplier = new Supplier();
-        }
-
-        supplier.setName(name);
-        supplier.setContact(contact);
-        supplier.setEmail(email);
+    public void saveOrUpdate(Supplier supplier) {
+        validate(supplier);
 
         if (supplier.getId() == null) {
-            this.save(supplier);
+            supplierDAO.save(supplier);
         } else {
-            this.update(supplier);
+            supplierDAO.update(supplier);
         }
+    }
 
-        return errors;
+    private void validate(Supplier supplier) {
+        Set<ConstraintViolation<Supplier>> violations = validator.validate(supplier);
+
+        if (!violations.isEmpty()) {
+            String errorMessage = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.joining("\n"));
+
+           throw new ValidationException(errorMessage);
+        }
     }
 }

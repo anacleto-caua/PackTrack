@@ -1,6 +1,7 @@
 package controller.supplier;
 
 import controller.basis.Controller;
+import jakarta.validation.ValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -33,18 +34,22 @@ public class SupplierRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event){
-        ArrayList<String> errors =
-            supplierService.saveOrUpdate(
-                currentSupplier,
-                supplierName.getText(),
-                supplierPhone.getText(),
-                supplierEmail.getText()
-            );
+        try {
+            Supplier supplier = new Supplier();
+            if (currentSupplier != null) {
+                supplier.setId(currentSupplier.getId());
+            }
 
-        if(errors.isEmpty()) {
+            supplier.setName(supplierName.getText());
+            supplier.setContact(supplierPhone.getText());
+            supplier.setEmail(supplierEmail.getText());
+
+            supplierService.saveOrUpdate(supplier);
+
             this.closeWindow(event);
-        } else {
-            errorLabel.setText(String.join("\n", errors));
+
+        } catch (ValidationException e) {
+            errorLabel.setText(e.getMessage());
             errorLabel.setVisible(true);
         }
     }
