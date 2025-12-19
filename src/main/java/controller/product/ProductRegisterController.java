@@ -2,6 +2,7 @@ package controller.product;
 
 import controller.basis.Controller;
 import dao.ProductDAO;
+import jakarta.validation.ValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -34,22 +35,28 @@ public class ProductRegisterController extends Controller {
 
     @FXML
     public void onSubmit(ActionEvent event){
+        try {
+            if(currentProduct == null){
+                currentProduct = new Product();
+            }
+            currentProduct.setName(productName.getText());
+            currentProduct.setDescription(productDescription.getText());
 
-        if (this.currentProduct == null) {
-            this.currentProduct = new Product();
-        }
-        ArrayList<String> errors =
-            productService.saveOrUpdate(
-                currentProduct,
-                productName.getText(),
-                productDescription.getText(),
-                productPrice.getText()
-            );
+            String priceText = productPrice.getText();
 
-        if(errors.isEmpty()) {
+            // TODO: This check shouldn't be here
+            if (!priceText.matches("\\d+(\\.\\d+)?")) {
+                errorLabel.setText("Preço inválido. Formato: XX.XX");
+                errorLabel.setVisible(true);
+                return;
+            }
+
+            currentProduct.setValue(new java.math.BigDecimal(priceText));
+            productService.saveOrUpdate(currentProduct);
             this.closeWindow(event);
-        } else {
-            errorLabel.setText(String.join("\n", errors));
+
+        } catch (ValidationException e) {
+            errorLabel.setText(e.getMessage());
             errorLabel.setVisible(true);
         }
     }

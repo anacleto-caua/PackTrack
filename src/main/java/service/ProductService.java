@@ -1,18 +1,31 @@
 package service;
 
 import dao.ProductDAO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
+import jakarta.validation.Validator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Product;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import validator.ValidatorMaster;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProductService {
 
     private ProductDAO productDAO = new ProductDAO();
+
+    private final Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory()
+            .getValidator();
 
     public void save(Product product) {
         productDAO.save(product);
@@ -31,31 +44,23 @@ public class ProductService {
         return FXCollections.observableArrayList(dbList);
     }
 
-    public ArrayList<String> saveOrUpdate(Product product, String name, String description, String valueStr) {
-        ArrayList<String> errors = new ArrayList<>();
-
-        errors.addAll(ValidatorMaster.notEmpty(name));
-        errors.addAll(ValidatorMaster.notEmpty(description));
-        errors.addAll(ValidatorMaster.isBigDecimal(valueStr));
-
-        if (!errors.isEmpty()) {
-            return errors;
-        }
-
-        if (product == null) {
-            product = new Product();
-        }
-
-        product.setName(name);
-        product.setDescription(description);
-        product.setValue(new BigDecimal(valueStr));
+    public void saveOrUpdate(Product product) {
+        validate(product);
 
         if (product.getId() == null) {
-            this.save(product);
+            productDAO.save(product);
         } else {
-            this.update(product);
+            productDAO.update(product);
         }
+    }
 
-        return errors;
+    private void validate(Product product) {
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+        if (!violations.isEmpty()) {
+            String errors = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.joining("\n"));
+            throw new ValidationException(errors);
+        }
     }
 }
