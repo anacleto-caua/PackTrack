@@ -56,6 +56,9 @@ public class TableFactory<T> {
 
     public void initializeTable(TableView<T> table, Consumer<T> deleteHandler, Consumer<T> updateHandler) {
         table.getColumns().clear();
+
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+
         double defaultWidth = 150.0;
 
         for (Column<T> col : columns) {
