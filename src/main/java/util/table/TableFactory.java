@@ -55,8 +55,12 @@ public class TableFactory<T> {
     }
 
     public void initializeTable(TableView<T> table, Consumer<T> deleteHandler, Consumer<T> updateHandler) {
-        table.getColumns().clear();
+        // Infers 'haveDelete' and 'haveUpdate' based on whether the handlers are null
+        initializeTable(table, deleteHandler, updateHandler, deleteHandler != null, updateHandler != null);
+    }
 
+    public void initializeTable(TableView<T> table, Consumer<T> deleteHandler, Consumer<T> updateHandler, boolean haveDelete, boolean haveUpdate) {
+        table.getColumns().clear();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         double defaultWidth = 150.0;
@@ -70,17 +74,59 @@ public class TableFactory<T> {
             table.getColumns().add(uiColumn);
         }
 
-        if (deleteHandler != null || updateHandler != null) {
-            TableColumn<T, Void> actionColumn = createActionColumn(deleteHandler, updateHandler);
+        if (haveDelete || haveUpdate) {
+            Consumer<T> finalDelete = haveDelete ? deleteHandler : null;
+            Consumer<T> finalUpdate = haveUpdate ? updateHandler : null;
+
+            TableColumn<T, Void> actionColumn = createActionColumn(finalDelete, finalUpdate);
             actionColumn.setPrefWidth(250);
             table.getColumns().add(actionColumn);
         }
     }
 
     private TableColumn<T, Void> createActionColumn(Consumer<T> deleteHandler, Consumer<T> updateHandler) {
-        TableColumn<T, Void> actionColumn = new TableColumn<>("Ações");
-        actionColumn.setCellFactory(param -> new ActionCell<>(deleteHandler, updateHandler));
-        return actionColumn;
+        TableColumn<T, Void> col = new TableColumn<>("Actions");
+
+        col.setCellFactory(param -> new TableCell<>() {
+            private final Button btnDelete = new Button("Apagar");
+            private final Button btnUpdate = new Button("Atualizar");
+            private final HBox pane = new HBox(10); // 10 is the spacing between buttons
+            {
+                btnDelete.getStyleClass().add("delete-button");
+                btnUpdate.getStyleClass().add("update-button");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    pane.getChildren().clear();
+
+                    if (updateHandler != null) {
+                        btnUpdate.setOnAction(event -> {
+                            T data = getTableView().getItems().get(getIndex());
+                            updateHandler.accept(data);
+                        });
+                        pane.getChildren().add(btnUpdate);
+                    }
+
+                    if (deleteHandler != null) {
+                        btnDelete.setOnAction(event -> {
+                            T data = getTableView().getItems().get(getIndex());
+                            deleteHandler.accept(data);
+                        });
+                        pane.getChildren().add(btnDelete);
+                    }
+
+                    setGraphic(pane);
+                }
+            }
+        });
+
+        return col;
     }
 
     private static class ActionCell<T> extends TableCell<T, Void> {

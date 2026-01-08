@@ -53,8 +53,6 @@ public class SaleRegisterController extends Controller {
     private ObservableList<SaleItem> itensDaVenda = FXCollections.observableArrayList();
     private ObservableList<Client> obsClients;
     private ObservableList<Product> obsProducts;
-    private BigDecimal totalValue = BigDecimal.ZERO;
-
 
     @FXML
     public void initialize() {
@@ -91,16 +89,22 @@ public class SaleRegisterController extends Controller {
         );
 
         TableFactory<SaleItem> factory = new TableFactory<>(columns);
-        factory.initializeTable(itemsTable, this::deleteItem, this::updateItem);
+        factory.initializeTable(itemsTable, this::deleteItem, this::updateItem, true, false);
 
         refreshTableData();
     }
 
-    private void deleteItem(SaleItem item) {}
+    private void deleteItem(SaleItem item) {
+        if (item != null) {
+            itensDaVenda.remove(item);
+        }
+        refreshTableData();
+    }
     private void updateItem(SaleItem item) {}
 
     private void refreshTableData() {
         itemsTable.setItems(itensDaVenda);
+        itemsTable.refresh();
     }
 
     private void configureComboboxConverter() {
@@ -145,8 +149,8 @@ public class SaleRegisterController extends Controller {
                 currentSale = new Sale();
             }
             currentSale.setClient(saleClientName.getValue()); //client
-//            currentSale.setItems(itensDaVenda.stream().map(SaleIten::getProduct).collect(Collectors.toList())); //items
 
+            BigDecimal totalPrice = BigDecimal.ZERO;
             for (SaleItem aux : itemsTable.getItems()) {
                 SaleItem item = new SaleItem();
 
@@ -155,15 +159,27 @@ public class SaleRegisterController extends Controller {
                 item.setPriceAtMomentOfSale(aux.getPriceAtMomentOfSale());
 
                 currentSale.addItem(item);
+                totalPrice = totalPrice.add(item.getPriceAtMomentOfSale().multiply(BigDecimal.valueOf(item.getQuantity())));
             }
 
-            currentSale.setTotalValue(this.totalValue);
+            currentSale.setTotalValue(totalPrice);
             LocalDate localDate = datePicker.getValue();
             currentSale.setDate(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
             saleService.saveOrUpdate(currentSale);
             this.closeWindow(event);
 
+            // UPDATE STOCK
+            // =============================================================
+            for (SaleItem item : currentSale.getItems()) {
+                Product p = item.getProduct();
+                int quantitySold = item.getQuantity();
+                int newStock = p.getQuantity() - quantitySold;
+                if (newStock < 0) newStock = 0;
+                p.setQuantity(newStock);
+                productService.saveOrUpdate(p);
+            }
+            // =============================================================
         } catch (ValidationException e) {
             errorLabel.setText(e.getMessage());
             errorLabel.setVisible(true);
@@ -186,25 +202,56 @@ public class SaleRegisterController extends Controller {
 
     public void onAddItem() {
         Product p = products.getValue();
-        int qtd = Integer.parseInt(txtQuantity.getText());
+        String qtyText = txtQuantity.getText();
 
-        if (p != null && qtd > 0) {
-            SaleItem saleItem = new SaleItem();
-            saleItem.setProduct(p);
-            saleItem.setQuantity(qtd);
-            saleItem.setPriceAtMomentOfSale(p.getValue());
-            itensDaVenda.add(saleItem);
+        if (p != null && qtyText != null && !qtyText.isEmpty()) {
+            int inputQty = Integer.parseInt(qtyText);
 
-            BigDecimal v = saleItem.getPriceAtMomentOfSale().multiply(new BigDecimal(qtd));
-            this.totalValue = this.totalValue.add(v);
+            if (inputQty > 0) {
+                int availableStock = p.getQuantity();
 
-            if (saleTotalValue != null) {
-                saleTotalValue.setText(this.totalValue.toString());
+                SaleItem existingItem = null;
+
+                for (SaleItem item : itensDaVenda) {
+                    if (item.getProduct().equals(p)) {
+                        existingItem = item;
+                        break;
+                    }
+                }
+
+                if (existingItem != null) {
+                    int currentQtyInCart = existingItem.getQuantity();
+                    int proposedTotal = currentQtyInCart + inputQty;
+
+                    if (proposedTotal > availableStock) {
+                        existingItem.setQuantity(availableStock);
+
+                    } else {
+                        existingItem.setQuantity(proposedTotal);
+                    }
+
+                    itemsTable.refresh();
+
+                } else {
+                    int finalQty = inputQty;
+
+                    if (finalQty > availableStock) {
+                        finalQty = availableStock;
+                    }
+
+                    if (finalQty > 0) {
+                        SaleItem saleItem = new SaleItem();
+                        saleItem.setProduct(p);
+                        saleItem.setQuantity(finalQty);
+                        saleItem.setPriceAtMomentOfSale(p.getValue());
+                        itensDaVenda.add(saleItem);
+                    }
+                }
+
+                txtQuantity.clear();
+                products.getSelectionModel().clearSelection();
+                products.requestFocus();
             }
-
-            // Limpa os campos para o próximo item
-            txtQuantity.clear();
-            products.getSelectionModel().clearSelection();
         }
     }
 }
