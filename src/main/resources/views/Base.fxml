@@ -10,7 +10,7 @@
 <BorderPane
         xmlns="http://javafx.com/javafx/21"
         xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="controller.DashboardController"
+        fx:controller="controller.HomeController"
         maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="850.0" prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #f7f9fb;">
 
     <!-- Painel de Navegação (Lado Esquerdo) -->
