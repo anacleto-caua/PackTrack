@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.util.ArrayList; // Important
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -30,6 +31,9 @@ public class Sale {
 
     @Column(length = 3)
     private String currency;
+
+    @Column(nullable = false)
+    private Date date;
 
     // Use this method to add items. It ensures the Item knows about the Sale.
     public void addItem(SaleItem item) {
