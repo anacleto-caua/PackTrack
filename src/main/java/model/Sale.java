@@ -3,8 +3,8 @@ package model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList; // Important
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -19,7 +19,7 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) //voltar para lazy
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
@@ -33,7 +33,7 @@ public class Sale {
     private String currency;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
     // Use this method to add items. It ensures the Item knows about the Sale.
     public void addItem(SaleItem item) {

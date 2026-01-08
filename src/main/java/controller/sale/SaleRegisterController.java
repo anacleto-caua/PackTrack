@@ -15,19 +15,16 @@ import model.SaleItem;
 import service.ClientService;
 import service.ProductService;
 import service.SaleService;
-import util.SaleIten;
 import util.table.TableFactory;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class SaleRegisterController extends Controller {
 
     @FXML
-    private TableView<SaleIten> itemsTable;
+    private TableView<SaleItem> itemsTable;
     @FXML
     private ComboBox<Client> saleClientName;
     @FXML
@@ -50,9 +47,10 @@ public class SaleRegisterController extends Controller {
     private SaleService saleService = new SaleService();
     private ClientService clientService = new ClientService();
     private ProductService productService = new ProductService();
-    private ObservableList<SaleIten> itensDaVenda = FXCollections.observableArrayList();
+    private ObservableList<SaleItem> itensDaVenda = FXCollections.observableArrayList();
     private ObservableList<Client> obsClients;
     private ObservableList<Product> obsProducts;
+    private BigDecimal totalValue = BigDecimal.ZERO;
 
 
     @FXML
@@ -85,18 +83,18 @@ public class SaleRegisterController extends Controller {
 
     private void initTable() {
         var columns = List.of(
-                TableFactory.Column.<SaleIten>of("Produto", s -> s.getProduct().getName()),
-                TableFactory.Column.<SaleIten>of("Qtd", s -> s.getQtd().toString())
+                TableFactory.Column.<SaleItem>of("Produto", s -> s.getProduct().getName()),
+                TableFactory.Column.<SaleItem>of("Qtd", s -> s.getQuantity().toString())
         );
 
-        TableFactory<SaleIten> factory = new TableFactory<>(columns);
+        TableFactory<SaleItem> factory = new TableFactory<>(columns);
         factory.initializeTable(itemsTable, this::deleteItem, this::updateItem);
 
         refreshTableData();
     }
 
-    private void deleteItem(SaleIten item) {}
-    private void updateItem(SaleIten item) {}
+    private void deleteItem(SaleItem item) {}
+    private void updateItem(SaleItem item) {}
 
     private void refreshTableData() {
         itemsTable.setItems(itensDaVenda);
@@ -145,8 +143,19 @@ public class SaleRegisterController extends Controller {
             }
             currentSale.setClient(saleClientName.getValue()); //client
 //            currentSale.setItems(itensDaVenda.stream().map(SaleIten::getProduct).collect(Collectors.toList())); //items
-            currentSale.setTotalValue(new BigDecimal(saleTotalValue.getText()));
-            currentSale.setDate(new Date(saleDate.getText()));
+
+            for (SaleItem aux : itemsTable.getItems()) {
+                SaleItem item = new SaleItem();
+
+                item.setProduct(aux.getProduct());
+                item.setQuantity(aux.getQuantity());
+                item.setPriceAtMomentOfSale(aux.getPriceAtMomentOfSale());
+
+                currentSale.addItem(item);
+            }
+
+            currentSale.setTotalValue(this.totalValue);
+            currentSale.setDate(datePicker.getValue());
 
             saleService.saveOrUpdate(currentSale);
             this.closeWindow(event);
@@ -176,8 +185,18 @@ public class SaleRegisterController extends Controller {
         int qtd = Integer.parseInt(txtQuantity.getText());
 
         if (p != null && qtd > 0) {
-            itensDaVenda.add(new SaleIten(p, qtd, p.getValue()));
-//            atualizarTotal();
+            SaleItem saleItem = new SaleItem();
+            saleItem.setProduct(p);
+            saleItem.setQuantity(qtd);
+            saleItem.setPriceAtMomentOfSale(p.getValue());
+            itensDaVenda.add(saleItem);
+
+            BigDecimal v = saleItem.getPriceAtMomentOfSale().multiply(new BigDecimal(qtd));
+            this.totalValue = this.totalValue.add(v);
+
+            if (saleTotalValue != null) {
+                saleTotalValue.setText(this.totalValue.toString());
+            }
 
             // Limpa os campos para o próximo item
             txtQuantity.clear();

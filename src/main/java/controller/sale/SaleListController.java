@@ -28,7 +28,7 @@ public class SaleListController extends Controller {
         var columns = List.of(
                 TableFactory.Column.<Sale>of("ID", s -> String.valueOf(s.getId())),
                 TableFactory.Column.<Sale>of("Cliente", s -> s.getClient().getName()),
-                TableFactory.Column.<Sale>of("Cliente", s -> s.getClient().getName()), //ITEMS
+//                TableFactory.Column.<Sale>of("Cliente", s -> s.getClient().getName()), //ITEMS
                 TableFactory.Column.<Sale>of("Valor total", s -> String.valueOf(s.getTotalValue())),
                 TableFactory.Column.<Sale>of("Data", s -> s.getDate().toString())
         );
