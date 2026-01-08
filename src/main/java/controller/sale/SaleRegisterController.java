@@ -18,6 +18,9 @@ import service.SaleService;
 import util.table.TableFactory;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -155,7 +158,8 @@ public class SaleRegisterController extends Controller {
             }
 
             currentSale.setTotalValue(this.totalValue);
-            currentSale.setDate(datePicker.getValue());
+            LocalDate localDate = datePicker.getValue();
+            currentSale.setDate(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
             saleService.saveOrUpdate(currentSale);
             this.closeWindow(event);

@@ -2,6 +2,7 @@ package dao;
 
 import dao.generic.GenericDAO;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.TypedQuery;
 import model.Sale;
 import util.JPAUtil;
@@ -20,8 +21,9 @@ public class SaleDAO extends GenericDAO<Sale> {
         try {
             String jpql = "SELECT SUM(s.totalValue) FROM Sale s WHERE s.date BETWEEN :startDate AND :endDate";
             TypedQuery<BigDecimal> query = em.createQuery(jpql, BigDecimal.class);
-            query.setParameter("startDate", startDate);
-            query.setParameter("endDate", endDate);
+
+            query.setParameter("startDate", startDate, TemporalType.TIMESTAMP);
+            query.setParameter("endDate", endDate, TemporalType.TIMESTAMP);
 
             BigDecimal result = query.getSingleResult();
             return result != null ? result : BigDecimal.ZERO;

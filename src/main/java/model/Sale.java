@@ -3,7 +3,7 @@ package model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.ArrayList; // Important
 import java.util.List;
 
@@ -32,8 +32,9 @@ public class Sale {
     @Column(length = 3)
     private String currency;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private LocalDate date;
+    private Date date;
 
     // Use this method to add items. It ensures the Item knows about the Sale.
     public void addItem(SaleItem item) {

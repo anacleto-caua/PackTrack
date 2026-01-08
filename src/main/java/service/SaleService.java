@@ -64,7 +64,7 @@ public class SaleService {
         }
     }
 
-    // --- DASHBOARD ---
+    // --- DASHBOARD METHODS ---
 
     public double getCurrentMonthTotal() {
         Date start = toDate(LocalDate.now().withDayOfMonth(1));
@@ -80,7 +80,7 @@ public class SaleService {
         Date prevEnd = toDate(LocalDate.now().withDayOfMonth(1).minusDays(1));
         double previous = saleDAO.sumTotalValueByDateRange(prevStart, prevEnd).doubleValue();
 
-        if (previous == 0) return 100.0;
+        if (previous == 0) return 100.0; // Avoid division by zero
 
         double growth = ((current - previous) / previous) * 100;
 
@@ -96,7 +96,6 @@ public class SaleService {
             if (!ticker.isEmpty()) {
                 ticker.append("  /  ");
             }
-
             ticker.append("VENDA #").append(sale.getId()).append(" { ");
 
             String itemsStr = sale.getItems().stream()
@@ -106,7 +105,7 @@ public class SaleService {
             ticker.append(itemsStr).append(" }");
         }
 
-        return ticker.toString().isEmpty() ? "Nenhuma venda registrada hoje." : ticker.toString();
+        return ticker.toString().isEmpty() ? "Nenhuma venda registrada." : ticker.toString();
     }
 
     public Map<String, Number> getSalesHistory(int monthsBack) {
