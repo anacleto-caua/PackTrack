@@ -97,7 +97,7 @@
                 <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
             </padding>
             <children>
-                <Label text="ÚLTIMAS VENDA" textFill="#757575">
+                <Label text="ÚLTIMAS VENDAS" textFill="#757575">
                     <font>
                         <Font size="10.0" />
                     </font>

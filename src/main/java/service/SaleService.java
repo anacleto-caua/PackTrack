@@ -10,8 +10,12 @@ import javafx.collections.ObservableList;
 import model.Sale;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SaleService {
@@ -58,5 +62,74 @@ public class SaleService {
                     .collect(Collectors.joining("\n"));
             throw new ValidationException(errors);
         }
+    }
+
+    // --- DASHBOARD ---
+
+    public double getCurrentMonthTotal() {
+        Date start = toDate(LocalDate.now().withDayOfMonth(1));
+        Date end = toDate(LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1));
+
+        return saleDAO.sumTotalValueByDateRange(start, end).doubleValue();
+    }
+
+    public double getSalesGrowth() {
+        double current = getCurrentMonthTotal();
+
+        Date prevStart = toDate(LocalDate.now().minusMonths(1).withDayOfMonth(1));
+        Date prevEnd = toDate(LocalDate.now().withDayOfMonth(1).minusDays(1));
+        double previous = saleDAO.sumTotalValueByDateRange(prevStart, prevEnd).doubleValue();
+
+        if (previous == 0) return 100.0;
+
+        double growth = ((current - previous) / previous) * 100;
+
+        BigDecimal bd = new BigDecimal(Double.toString(growth));
+        return bd.setScale(1, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public String getDashboardTicker() {
+        List<Sale> recentSales = saleDAO.findRecent(5); // Get last 5
+        StringBuilder ticker = new StringBuilder();
+
+        for (Sale sale : recentSales) {
+            if (!ticker.isEmpty()) {
+                ticker.append("  /  ");
+            }
+
+            ticker.append("VENDA #").append(sale.getId()).append(" { ");
+
+            String itemsStr = sale.getItems().stream()
+                    .map(item -> item.getQuantity() + "x " + item.getProduct().getName())
+                    .collect(Collectors.joining(", "));
+
+            ticker.append(itemsStr).append(" }");
+        }
+
+        return ticker.toString().isEmpty() ? "Nenhuma venda registrada hoje." : ticker.toString();
+    }
+
+    public Map<String, Number> getSalesHistory(int monthsBack) {
+        Map<String, Number> history = new LinkedHashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/yy", new Locale("pt", "BR"));
+
+        for (int i = monthsBack - 1; i >= 0; i--) {
+            LocalDate dateRef = LocalDate.now().minusMonths(i);
+
+            Date start = toDate(dateRef.withDayOfMonth(1));
+            Date end = toDate(dateRef.plusMonths(1).withDayOfMonth(1).minusDays(1));
+
+            BigDecimal total = saleDAO.sumTotalValueByDateRange(start, end);
+
+            String label = sdf.format(start);
+            label = label.substring(0, 1).toUpperCase() + label.substring(1);
+
+            history.put(label, total);
+        }
+        return history;
+    }
+
+    private Date toDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
