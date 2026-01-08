@@ -9,9 +9,12 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.Product;
+import service.ProductService;
 import service.SaleService;
 
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -27,6 +30,10 @@ public class DashboardController extends Controller {
 
     private SaleService saleService = new SaleService();
 
+    ProductService productService = new ProductService();
+
+    private int LOW_STOCK_THRESHOLD = 15;
+
     @FXML
     public void initialize() {
 
@@ -34,6 +41,8 @@ public class DashboardController extends Controller {
         setSalesGrowth(saleService.getSalesGrowth());
         setTransactionFeed(saleService.getDashboardTicker());
         setChartData(saleService.getSalesHistory(5));
+
+        loadLowStockList();
 
         // Static for now
         setSystemStatus("Operação Normal");
@@ -90,6 +99,22 @@ public class DashboardController extends Controller {
 
         HBox item = createStockItemHBox(name, quantity + " un", colorHex);
         vboxLowStock.getChildren().addAll(item, new Separator());
+    }
+
+    private void loadLowStockList() {
+        clearLowStockList();
+
+        List<Product> lowStockItems = productService.getLowStockProducts(LOW_STOCK_THRESHOLD);
+
+        if (lowStockItems.isEmpty()) {
+            Label okLabel = new Label("Estoque Normal");
+            okLabel.setStyle("-fx-text-fill: #275f45; -fx-font-style: italic;");
+            vboxLowStock.getChildren().add(okLabel);
+        } else {
+            for (Product p : lowStockItems) {
+                addLowStockItem(p.getName(), p.getQuantity());
+            }
+        }
     }
 
     // PRIVATE HELPERS

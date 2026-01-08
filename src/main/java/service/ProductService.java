@@ -63,4 +63,9 @@ public class ProductService {
             throw new ValidationException(errors);
         }
     }
+
+    // --- DASHBOARD ---
+    public List<Product> getLowStockProducts(int threshold) {
+        return productDAO.findLowStock(threshold);
+    }
 }

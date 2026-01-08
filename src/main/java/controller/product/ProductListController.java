@@ -32,6 +32,7 @@ public class ProductListController extends Controller {
                 TableFactory.Column.<Product>of("ID", p -> String.valueOf(p.getId())),
                 TableFactory.Column.<Product>of("Name", Product::getName),
                 TableFactory.Column.<Product>of("Description", Product::getDescription),
+                TableFactory.Column.<Product>of("Qtd", p -> p.getQuantity() != null ? p.getQuantity().toString() : "0"),
                 TableFactory.Column.<Product>of("Value", p -> p.getValue() != null ? String.format("R$ %.2f", p.getValue()) : "R$ 0.00")
         );
 

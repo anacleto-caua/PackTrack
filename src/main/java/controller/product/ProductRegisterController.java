@@ -23,6 +23,9 @@ public class ProductRegisterController extends Controller {
     private TextField productPrice; // TODO: CHANGE FROM TEXTFIELD TO A MORE SUITABLE FIELD
     @FXML
     private Label errorLabel;
+    @FXML
+    private TextField productQuantity; // TODO: CHANGE FROM TEXTFIELD TO A MORE SUITABLE FIELD
+
 
     private Product currentProduct;
 
@@ -51,6 +54,15 @@ public class ProductRegisterController extends Controller {
                 return;
             }
 
+            String quantityText = productQuantity.getText();
+            // Basic validation to prevent crash on non-integers
+            if (quantityText == null || !quantityText.matches("\\d+")) {
+                errorLabel.setText("Quantidade inválida. Digite apenas números inteiros.");
+                errorLabel.setVisible(true);
+                return;
+            }
+            currentProduct.setQuantity(Integer.parseInt(quantityText));
+
             currentProduct.setValue(new java.math.BigDecimal(priceText));
             productService.saveOrUpdate(currentProduct);
             this.closeWindow(event);
@@ -68,6 +80,9 @@ public class ProductRegisterController extends Controller {
             this.productName.setText(product.getName());
             this.productDescription.setText(product.getDescription());
             this.productPrice.setText(product.getValue().toString());
+
+            String qty = product.getQuantity() != null ? product.getQuantity().toString() : "0";
+            this.productQuantity.setText(qty);
         }
     }
 }

@@ -31,4 +31,9 @@ public class Product {
     @Digits(integer = 10, fraction = 2, message = "Formato inválido. Use: XX.XX")
     @Column(nullable = false)
     private BigDecimal value;
+
+    @NotNull(message = "A quantidade é obrigatória")
+    @Min(value = 0, message = "A quantidade não pode ser negativa")
+    @Column(nullable = false)
+    private Integer quantity = 0;
 }
