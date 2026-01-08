@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class DashboardController extends Controller {
 
-    // --- FXML Injections ---
     @FXML private Label lblTotalSales;
     @FXML private Label lblSalesComparison;
     @FXML private Label lblSystemStatus;
@@ -30,19 +29,20 @@ public class DashboardController extends Controller {
 
     private SaleService saleService = new SaleService();
 
-    ProductService productService = new ProductService();
+    private ProductService productService = new ProductService();
 
-    private int LOW_STOCK_THRESHOLD = 15;
+    private final int LOW_STOCK_THRESHOLD = 15;
 
     @FXML
     public void initialize() {
+        chartSalesHistory.setStyle("default-color0: #28a745;");
 
         setTotalSales(saleService.getCurrentMonthTotal());
         setSalesGrowth(saleService.getSalesGrowth());
         setTransactionFeed(saleService.getDashboardTicker());
         setChartData(saleService.getSalesHistory(5));
 
-        loadLowStockList();
+        loadLowStockList(LOW_STOCK_THRESHOLD);
 
         // Static for now
         setSystemStatus("Operação Normal");
@@ -58,7 +58,7 @@ public class DashboardController extends Controller {
             lblSalesComparison.setText("+" + percentage + "% comparado ao mês anterior");
             lblSalesComparison.setStyle("-fx-text-fill: #28a745;");
         } else {
-            lblSalesComparison.setText(percentage + "% comparado ao mês anterior");
+            lblSalesComparison.setText("-" + percentage + "% comparado ao mês anterior");
             lblSalesComparison.setStyle("-fx-text-fill: #dc3545;");
         }
     }
@@ -90,21 +90,20 @@ public class DashboardController extends Controller {
         }
     }
 
-    public void addLowStockItem(String name, int quantity) {
+    public void addLowStockItem(String name, int quantity, int threshold) {
         String colorHex;
 
-        if (quantity <= 5) colorHex = "#dc3545";
-        else if (quantity <= 15) colorHex = "#e67e22";
-        else colorHex = "#275f45";
+        if (quantity <= threshold/2) colorHex = "#dc3545";
+        else colorHex = "#e67e22";
 
         HBox item = createStockItemHBox(name, quantity + " un", colorHex);
         vboxLowStock.getChildren().addAll(item, new Separator());
     }
 
-    private void loadLowStockList() {
+    private void loadLowStockList(int threshold) {
         clearLowStockList();
 
-        List<Product> lowStockItems = productService.getLowStockProducts(LOW_STOCK_THRESHOLD);
+        List<Product> lowStockItems = productService.getLowStockProducts(threshold);
 
         if (lowStockItems.isEmpty()) {
             Label okLabel = new Label("Estoque Normal");
@@ -112,7 +111,7 @@ public class DashboardController extends Controller {
             vboxLowStock.getChildren().add(okLabel);
         } else {
             for (Product p : lowStockItems) {
-                addLowStockItem(p.getName(), p.getQuantity());
+                addLowStockItem(p.getName(), p.getQuantity(), threshold);
             }
         }
     }

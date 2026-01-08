@@ -128,7 +128,7 @@
                             </font>
                         </Label>
 
-                        <BarChart fx:id="chartSalesHistory" legendVisible="false" verticalGridLinesVisible="false" VBox.vgrow="ALWAYS">
+                        <BarChart fx:id="chartSalesHistory"  legendVisible="false" verticalGridLinesVisible="false" VBox.vgrow="ALWAYS">
                             <xAxis>
                                 <CategoryAxis label="Mês/Ano" side="BOTTOM" />
                             </xAxis>
