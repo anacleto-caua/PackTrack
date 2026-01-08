@@ -1,0 +1,73 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    ArrowColor Black
+}
+
+' --- Atores ---
+actor "Usuário / Funcionário" as User
+note right of User
+  Inclui papéis:
+  Administrador, Gerente, Funcionário
+end note
+
+' --- Pacotes e Casos de Uso ---
+
+package "Acesso e Segurança" {
+    usecase "Login" as UC_Login
+}
+
+package "Cadastros" {
+    usecase "Gerenciar Clientes\n(CRUD)" as UC_Clients
+    usecase "Gerenciar Funcionários\n(CRUD)" as UC_Employees
+    usecase "Gerenciar Fornecedores\n(CRUD)" as UC_Suppliers
+    usecase "Gerenciar Produtos\n(CRUD)" as UC_Products
+}
+
+package "Módulo de Vendas" {
+    usecase "Registrar Venda" as UC_RegisterSale
+    usecase "Ver Histórico de Vendas" as UC_SalesHistory
+   
+    ' Sub-etapas incluídas no processo de Venda
+    usecase "Selecionar Cliente" as UC_SelectClient
+    usecase "Adicionar Produtos\n(Calc. Total)" as UC_AddProducts
+    usecase "Atualizar Estoque\n(Ação do Sistema)" as UC_UpdateStock
+}
+
+package "Dashboard e Relatórios" {
+    usecase "Visualizar Dashboard" as UC_Dashboard
+    usecase "Ver Indicadores de Vendas\n(Mensal e Crescimento)" as UC_Indicators
+    usecase "Ver Alertas de Estoque Baixo" as UC_LowStock
+}
+
+' --- Relacionamentos ---
+
+' 1. Acesso ao Login
+User --> UC_Login
+
+' 2. Acesso aos Gerenciamentos
+User --> UC_Clients
+User --> UC_Employees
+User --> UC_Suppliers
+User --> UC_Products
+
+' 3. Lógica de Vendas
+User --> UC_RegisterSale
+User --> UC_SalesHistory
+
+' Includes para Registrar Venda (Etapas obrigatórias)
+UC_RegisterSale ..> UC_SelectClient : <<include>>
+UC_RegisterSale ..> UC_AddProducts : <<include>>
+UC_RegisterSale ..> UC_UpdateStock : <<include>>
+
+' 4. Acesso ao Dashboard
+User --> UC_Dashboard
+
+' Composição do Dashboard
+UC_Dashboard ..> UC_Indicators : <<include>>
+UC_Dashboard ..> UC_LowStock : <<include>>
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+actor "Usuário" as User
+participant "SaleRegisterController" as Ctrl
+participant "Sale/SaleItem" as Entity
+participant "SaleService" as Svc
+participant "SaleDAO" as DAO
+participant "ProductService" as ProdSvc
+participant "ProductDAO" as ProdDAO
+database "Database/EntityManager" as DB
+
+User -> Ctrl: onSubmit(event)
+activate Ctrl
+
+Ctrl -> Entity: new Sale()
+Ctrl -> Entity: setClient(client)
+
+loop Para cada item na Tabela
+    Ctrl -> Entity: new SaleItem()
+    Ctrl -> Entity: addItem(item)
+end
+
+Ctrl -> Svc: saveOrUpdate(currentSale)
+activate Svc
+    Svc -> Svc: validate(sale)
+    Svc -> DAO: save(sale)
+    activate DAO
+        DAO -> DB: persist(sale) [Cascade ALL]
+    deactivate DAO
+deactivate Svc
+
+loop Para cada item na Venda
+    Ctrl -> Entity: product.setQuantity(newStock)
+    Ctrl -> ProdSvc: saveOrUpdate(product)
+    activate ProdSvc
+        ProdSvc -> ProdDAO: update(product)
+        activate ProdDAO
+            ProdDAO -> DB: merge(product)
+        deactivate ProdDAO
+    deactivate ProdSvc
+end
+
+Ctrl -> Ctrl: closeWindow()
+deactivate Ctrl
+@enduml

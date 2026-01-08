@@ -1,0 +1,36 @@
+@startuml
+actor "Usuário" as User
+participant "LoginController" as Ctrl
+participant "EmployeeService" as Svc
+participant "EmployeeDAO" as DAO
+database "Banco de Dados" as DB
+participant "ViewManager" as View
+
+User -> Ctrl: clica em "Entrar"
+activate Ctrl
+
+Ctrl -> Svc: tryLogin(username, password)
+activate Svc
+    Svc -> Svc: validateInputs()
+    
+    Svc -> DAO: findByUsernameOrEmail(id)
+    activate DAO
+        DAO -> DB: SELECT ... WHERE username OR email
+        DB --> DAO: Employee Entity / null
+    deactivate DAO
+    
+    Svc -> Svc: checkPassword()
+    Svc --> Ctrl: return Employee / null
+deactivate Svc
+
+alt Login com Sucesso
+    Ctrl -> View: loadView("Base.fxml")
+    activate View
+        View -> View: mainScene.setRoot(root)
+    deactivate View
+else Falha no Login
+    Ctrl -> User: Exibe Erro / Imprime no Console
+end
+
+deactivate Ctrl
+@enduml

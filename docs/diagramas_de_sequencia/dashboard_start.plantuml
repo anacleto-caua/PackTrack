@@ -1,0 +1,71 @@
+@startuml
+actor "System/JavaFX" as Sys
+participant "DashboardController" as Ctrl
+participant "SaleService" as SaleSvc
+participant "ProductService" as ProdSvc
+participant "SaleDAO" as SaleDAO
+participant "ProductDAO" as ProdDAO
+database "Database" as DB
+
+Sys -> Ctrl: initialize()
+activate Ctrl
+
+group Phase 2: Financial Metrics
+    Ctrl -> SaleSvc: getCurrentMonthTotal()
+    activate SaleSvc
+        SaleSvc -> SaleDAO: sumTotalByDate(currMonth)
+        activate SaleDAO
+            SaleDAO -> DB: SELECT SUM...
+            DB --> SaleDAO: result
+        deactivate SaleDAO
+    SaleSvc --> Ctrl: return total
+    deactivate SaleSvc
+    
+    Ctrl -> SaleSvc: getSalesGrowth()
+    activate SaleSvc
+        SaleSvc -> SaleDAO: sumTotalByDate(prevMonth)
+        activate SaleDAO
+            SaleDAO --> SaleSvc: return prevTotal
+        deactivate SaleDAO
+        SaleSvc -> SaleSvc: calculate % logic
+    SaleSvc --> Ctrl: return percentage
+    deactivate SaleSvc
+end
+
+group Phase 3: Feeds & History
+    Ctrl -> SaleSvc: getDashboardTicker()
+    activate SaleSvc
+        SaleSvc -> SaleDAO: findRecent(5)
+        SaleDAO --> SaleSvc: List<Sale>
+    SaleSvc --> Ctrl: return formatted strings
+    deactivate SaleSvc
+
+    Ctrl -> SaleSvc: getSalesHistory(5)
+    activate SaleSvc
+        loop 5 times (Last 5 Months)
+            SaleSvc -> SaleDAO: sumTotalByDate(month)
+        end
+    SaleSvc --> Ctrl: return Chart Data
+    deactivate SaleSvc
+end
+
+group Phase 4: Inventory Alerts
+    Ctrl -> ProdSvc: getLowStockProducts(15)
+    activate ProdSvc
+        ProdSvc -> ProdDAO: findLowStock(15)
+        activate ProdDAO
+            ProdDAO -> DB: SELECT WHERE qty <= 15
+            DB --> ProdDAO: List<Product>
+        deactivate ProdDAO
+    ProdSvc --> Ctrl: return List<Product>
+    deactivate ProdSvc
+
+    loop For each Product in List
+        Ctrl -> Ctrl: Create HBox UI Row
+        Ctrl -> Ctrl: Add to VBox
+    end
+end
+
+Ctrl -> Ctrl: updateStatus("Normal")
+deactivate Ctrl
+@enduml

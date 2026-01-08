@@ -1,0 +1,221 @@
+@startuml
+' Estilo Visual
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 60
+skinparam ranksep 60
+
+' --- 1. Camada Model (Entidades) ---
+package "Camada Model" {
+    abstract class User {
+        - id: Long
+        - username: String
+        - password: String
+        - email: String
+        - phone: String
+        - cpf: String
+        - role: Roles
+    }
+
+    class Employee {
+        - salary: BigDecimal
+        - hireDate: LocalDate
+    }
+
+    class Client {
+        - id: Long
+        - name: String
+        - phone: String
+        - email: String
+    }
+
+    class Supplier {
+        - id: Long
+        - name: String
+        - contact: String
+        - email: String
+    }
+
+    class Product {
+        - id: Long
+        - name: String
+        - description: String
+        - value: BigDecimal
+        - quantity: Integer
+    }
+
+    class Sale {
+        - id: Long
+        - totalValue: BigDecimal
+        - date: LocalDateTime
+        - currency: String
+    }
+
+    class SaleItem {
+        - id: Long
+        - quantity: Integer
+        - priceAtMomentOfSale: BigDecimal
+    }
+
+    class Bill {
+        - id: Long
+        - value: BigDecimal
+        - description: String
+    }
+}
+
+' --- 2. Camada DAO ---
+package "Camada DAO" {
+    abstract class "GenericDAO<T>" {
+        + save(T)
+        + update(T)
+        + delete(Long)
+        + findById(Long)
+        + findAll()
+    }
+
+    class UserDAO
+    class EmployeeDAO {
+        + findByUsernameOrEmail()
+    }
+    class ClientDAO
+    class SupplierDAO
+    class ProductDAO {
+        + findLowStock()
+    }
+    class SaleDAO {
+        + sumTotalValueByDateRange()
+        + findRecent()
+    }
+    class BillDAO
+}
+
+' --- 3. Camada Service ---
+package "Camada Service" {
+    class ClientService {
+        + saveOrUpdate()
+        + getClientsList()
+    }
+    class SupplierService {
+        + saveOrUpdate()
+        + getSuppliersList()
+    }
+    class ProductService {
+        + saveOrUpdate()
+        + getLowStockProducts()
+    }
+    class EmployeeService {
+        + tryLogin()
+        + saveOrUpdate()
+    }
+    class SaleService {
+        + saveOrUpdate()
+        + getDashboardTicker()
+        + getSalesGrowth()
+    }
+}
+
+' --- 4. Camada Controller ---
+package "Camada Controller" {
+    abstract class Controller {
+        + closeWindow()
+    }
+
+    class LoginController
+    class HomeController
+    class DashboardController
+
+    package "Controllers de CRUD" {
+        class ClientListController
+        class ClientRegisterController
+        class SupplierListController
+        class SupplierRegisterController
+        class ProductListController
+        class ProductRegisterController
+        class EmployeeListController
+        class EmployeeRegisterController
+        class SaleListController
+        class SaleRegisterController
+    }
+}
+
+' --- 5. Utilitários ---
+package "Utilitários" {
+    class ViewManager <<Singleton>>
+    class JPAUtil
+    class ValidatorMaster
+    class TableFactory<T>
+}
+
+' --- Relacionamentos ---
+
+' Herança do Model
+User <|-- Employee
+
+' Associações do Model
+Sale "1" *-- "0..*" SaleItem : Composição
+Sale "*" --> "1" Client
+SaleItem "*" --> "1" Product
+Bill "*" --> "1" Supplier
+
+' Herança DAO
+"GenericDAO<T>" <|-- UserDAO
+"GenericDAO<T>" <|-- EmployeeDAO
+"GenericDAO<T>" <|-- ClientDAO
+"GenericDAO<T>" <|-- SupplierDAO
+"GenericDAO<T>" <|-- ProductDAO
+"GenericDAO<T>" <|-- SaleDAO
+"GenericDAO<T>" <|-- BillDAO
+
+' Service -> DAO (Dependência/Associação)
+ClientService -down-> ClientDAO
+SupplierService -down-> SupplierDAO
+ProductService -down-> ProductDAO
+EmployeeService -down-> EmployeeDAO
+SaleService -down-> SaleDAO
+
+' Herança do Controller
+Controller <|-- LoginController
+Controller <|-- HomeController
+Controller <|-- DashboardController
+Controller <|-- ClientListController
+Controller <|-- ClientRegisterController
+Controller <|-- SupplierListController
+Controller <|-- SupplierRegisterController
+Controller <|-- ProductListController
+Controller <|-- ProductRegisterController
+Controller <|-- EmployeeListController
+Controller <|-- EmployeeRegisterController
+Controller <|-- SaleListController
+Controller <|-- SaleRegisterController
+
+' Controller -> Service (Uso)
+LoginController ..> EmployeeService
+DashboardController ..> SaleService
+DashboardController ..> ProductService
+
+ClientListController ..> ClientService
+ClientRegisterController ..> ClientService
+SupplierListController ..> SupplierService
+SupplierRegisterController ..> SupplierService
+ProductListController ..> ProductService
+ProductRegisterController ..> ProductService
+EmployeeListController ..> EmployeeService
+EmployeeRegisterController ..> EmployeeService
+
+SaleListController ..> SaleService
+SaleRegisterController ..> SaleService
+SaleRegisterController ..> ProductService
+SaleRegisterController ..> ClientService
+
+' Uso de Utilitários
+"GenericDAO<T>" ..down..> JPAUtil : usa
+Controller ..down..> ViewManager : usa
+
+' --- Forçar Layout Vertical ---
+"Camada Controller" -[hidden]down-> "Camada Service"
+"Camada Service" -[hidden]down-> "Camada DAO"
+"Camada DAO" -[hidden]down-> "Camada Model"
+
+@enduml
