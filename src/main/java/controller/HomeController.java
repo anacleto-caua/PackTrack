@@ -6,14 +6,21 @@ import javafx.scene.layout.VBox;
 
 import manager.ViewManager;
 
-public class DashboardController extends Controller {
+public class HomeController extends Controller {
 
     @FXML
     private VBox contentBody;
 
     @FXML
+    public void initialize() {
+        handleDashboard();
+    }
+
+    @FXML
     public void handleDashboard() {
         System.out.println("Navegar para: Dashboard");
+
+        ViewManager.swapVBox(contentBody, "dashboard/Dashboard.fxml");
     }
 
     @FXML

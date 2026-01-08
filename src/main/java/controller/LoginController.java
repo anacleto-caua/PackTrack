@@ -24,7 +24,7 @@ public class LoginController extends Controller {
         var loggedEmployee = employeeService.tryLogin(username.getText(), password.getText());
         if (loggedEmployee != null) {
             System.out.println("Successful login! From: " + loggedEmployee.getUsername());
-            ViewManager.loadView("Dashboard.fxml");
+            ViewManager.loadView("Base.fxml");
         } else {
             System.out.println("Login failed!");
         }
